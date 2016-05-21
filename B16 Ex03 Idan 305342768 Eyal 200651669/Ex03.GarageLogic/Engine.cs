@@ -10,8 +10,25 @@
         }
 
         protected eEngineType m_EngineType;
+        protected readonly float r_MaxPowerAmount;
+        protected float m_CurrentPowerAmount;
 
-        public abstract void RePower(float powerAmount);
+        public Engine(float i_MaxPowerAmount)
+        {
+            r_MaxPowerAmount = i_MaxPowerAmount;
+        }
+
+        public void RePower(float i_PowerAmount)
+        {
+            if (i_PowerAmount + m_CurrentPowerAmount > r_MaxPowerAmount)
+            {
+                throw new Exception;
+            }
+            else
+            {
+                m_CurrentPowerAmount += i_PowerAmount;
+            }
+        }
 
         public eEngineType GetEngineType()
         {
