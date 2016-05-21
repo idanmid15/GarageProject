@@ -22,7 +22,7 @@
         {
             if (i_PowerAmount + m_CurrentPowerAmount > r_MaxPowerAmount)
             {
-                throw new Exception;
+                throw new ValueOutOfRangeException(0, r_MaxPowerAmount);
             }
             else
             {
