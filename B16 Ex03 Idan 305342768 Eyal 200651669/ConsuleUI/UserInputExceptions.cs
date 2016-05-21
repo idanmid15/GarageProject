@@ -12,7 +12,7 @@ namespace Ex03.ConsoleUI
             isValid = float.TryParse(i_Input, out floatInput);
             if (!isValid)
             {
-                throw new FormatException("Invalid input, must be of floating point type. try again");
+                throw new FormatException("Invalid input, must be of floating point type. Please try again");
             }
 
             return floatInput;
@@ -26,7 +26,7 @@ namespace Ex03.ConsoleUI
             isValid = int.TryParse(i_Input, out integerInput);
             if (!isValid)
             {
-                throw new FormatException("Invalid input, must be of floating point type. try again");
+                throw new FormatException("Invalid input, must be of floating point type. Please try again");
             }
 
             return integerInput;
