@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
@@ -34,6 +36,18 @@ namespace Ex03.GarageLogic
             }
 
             return returnValue;
+        }
+
+        public List<string> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
+        {
+            List<string> vehicleList = new List<string>();
+            Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
+            foreach (PropertyInfo objectMember in typeOfVehicle.GetProperties())
+            {
+                // Receives only the name of the members without the "m_"
+                vehicleList.Add(objectMember.Name.Substring(2));
+            }
+            return vehicleList;
         }
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
@@ -109,19 +123,21 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public string DisplayFullClientInfo(string i_LicensePlate)
+        public string GetFullClientInfo(string i_LicensePlate)
         {
+            StringBuilder clientProperties = new StringBuilder();
             GarageClient client = null;
-            string clientProperties = null;
+            
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                foreach (var clientProperty in client.GetType().GetProperties())
+                foreach (PropertyInfo objectMember in client.GetType().GetProperties())
                 {
-                    clientProperties += string.Format("{0} ", clientProperties.ToString());
+                    clientProperties.Append(string.Format("{0} : {1}{2}", objectMember.Name.Substring(2), 
+                        objectMember.GetValue(client, null).ToString(), Environment.NewLine));
                 }
             }
 
-            return clientProperties;
+            return clientProperties.ToString();
         }
     }
 }
