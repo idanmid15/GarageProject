@@ -1,4 +1,5 @@
 ﻿using System;
+using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
@@ -30,6 +31,20 @@ namespace Ex03.ConsoleUI
             }
 
             return integerInput;
+        }
+
+        public static GarageManager.eSupportedVehciles ParseCarTypeInput(string i_Input)
+        {
+            GarageManager.eSupportedVehciles vehicleTypeInput;
+            bool isValid = false;
+            
+            switch (i_Input)
+            {
+                case GarageManager.eSupportedVehciles.ElectricBike.ToString():
+                    isValid = true;
+                    break;
+                
+            }
         }
     }
 }
