@@ -33,18 +33,31 @@ namespace Ex03.ConsoleUI
             return integerInput;
         }
 
-        public static GarageManager.eSupportedVehciles ParseCarTypeInput(string i_Input)
+        public static GarageManager.eSupportedVehciles ParseVehicleTypeInput(string i_Input)
         {
-            GarageManager.eSupportedVehciles vehicleTypeInput;
-            bool isValid = false;
+            GarageManager.eSupportedVehciles vehicleTypeInput = 0;
             
-            switch (i_Input)
+            switch ((GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input)))
             {
-                case GarageManager.eSupportedVehciles.ElectricBike.ToString():
-                    isValid = true;
+                case GarageManager.eSupportedVehciles.ElectricBike:
+                    vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricBike;
                     break;
-                
+                case GarageManager.eSupportedVehciles.ElectricCar:
+                    vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricCar;
+                    break;
+                case GarageManager.eSupportedVehciles.FueledBike:
+                    vehicleTypeInput = GarageManager.eSupportedVehciles.FueledBike;
+                    break;
+                case GarageManager.eSupportedVehciles.FueledCar:
+                    vehicleTypeInput = GarageManager.eSupportedVehciles.FueledCar;
+                    break;
+                case GarageManager.eSupportedVehciles.Truck:
+                    vehicleTypeInput = GarageManager.eSupportedVehciles.Truck;
+                    break;
+                case default :
+                    throw new FormatException("Invalid input, must be a valid vehicle");
             }
+            return vehicleTypeInput;
         }
     }
 }
