@@ -37,7 +37,7 @@ namespace Ex03.GarageLogic
 
             return isNewClient;
         }
-
+        
         public Dictionary<string, Type> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
             Dictionary<string, Type> memberList = new Dictionary<string, Type>();
@@ -50,6 +50,12 @@ namespace Ex03.GarageLogic
             }
             return memberList;
         }
+
+        public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, Object[] i_InputParameters)
+        {
+            Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
+            return Activator.CreateInstance(typeOfVehicle, i_InputParameters) as Vehicle;
+        } 
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
         {
