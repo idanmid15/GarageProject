@@ -59,7 +59,10 @@ namespace Ex03.GarageLogic
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle)
         {
-            return new GarageClient(i_ClientName, i_ClientPhone, i_Vehicle, GarageClient.eVehicleStatus.InRepair);
+            GarageClient newClient = new GarageClient(i_ClientName, i_ClientPhone,
+                i_Vehicle, GarageClient.eVehicleStatus.InRepair);
+            m_GarageDictonary.Add(i_Vehicle.GetLicensePlate(), newClient);
+            return newClient;
         }
 
         public List<string> DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status = GarageClient.eVehicleStatus.None)
