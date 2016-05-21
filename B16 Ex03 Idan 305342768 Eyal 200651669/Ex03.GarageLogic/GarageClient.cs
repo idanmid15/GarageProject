@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public class GarageClient
     {
@@ -25,6 +21,5 @@ namespace Ex03.GarageLogic
             m_Vehicle = i_Vehicle;
             m_Status = i_Status;
         }
-       
     }
 }

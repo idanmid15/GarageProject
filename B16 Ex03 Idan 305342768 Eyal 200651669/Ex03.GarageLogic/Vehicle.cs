@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             return m_ModelType;
         }
 
-        public string GetLicensePlatel()
+        public string GetLicensePlate()
         {
             return m_LicensePlate;
         }

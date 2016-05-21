@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class GarageManager
+    public class GarageManager
     {
-
         public enum eSupportedVehciles
         {
             ElectricCar,
@@ -24,29 +22,30 @@ namespace Ex03.GarageLogic
             m_GarageDictonary = new Dictionary<string, GarageClient>();
         }
 
-        public int ManageClient(GarageClient i_GarageClient)
+        public int ManageClient(string i_LicensePlate)
         {
             //1 - means the car already in the shop, 0 means new car entry
             int returnValue = 0;
-            string clientLicensePlate = i_GarageClient.m_Vehicle.GetLicensePlate();
-            if (m_GarageDictonary.ContainsKey(clientLicensePlate))
+            GarageClient client = null;
+            if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                i_GarageClient.m_Status = GarageClient.eVehicleStatus.InRepair;
+                client.m_Status = GarageClient.eVehicleStatus.InRepair;
                 returnValue = 1;
-            }
-            else
-            {
-                m_GarageDictonary.Add(clientLicensePlate, i_GarageClient);
             }
 
             return returnValue;
+        }
+
+        public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
+        {
+            return new GarageClient(i_ClientName, i_ClientPhone, i_Vehicle, i_Status);
         }
 
         public List<string> DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status = GarageClient.eVehicleStatus.None)
         {
             //////status execption here/////
 
-            string clientLicensePlate = String.Empty;
+            string clientLicensePlate = string.Empty;
             List<string> filteredLicensePlates = new List<string>();
             //run over each vehicle, and add to a list the filtered ones.
             foreach (KeyValuePair<string, GarageClient> vehicleEntry in this.m_GarageDictonary)
@@ -56,14 +55,12 @@ namespace Ex03.GarageLogic
                 {
                     filteredLicensePlates.Add(clientLicensePlate);
                 }
-                else
+                else if (vehicleEntry.Value.m_Status == i_Status)
                 {
-                    if (vehicleEntry.Value.m_Status == i_Status)
-                    {
-                        filteredLicensePlates.Add(clientLicensePlate);
-                    }
+                    filteredLicensePlates.Add(clientLicensePlate);
                 }
             }
+
             return filteredLicensePlates;
         }
 
@@ -92,7 +89,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void FuelVehcile(string i_LicensePlate, FueledEngine.eFuelType I_FuelType, float i_FuelAmount)
+        public void FuelVehcile(string i_LicensePlate, FueledEngine.eFuelType i_FuelType, float i_FuelAmount)
         {
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
@@ -112,17 +109,19 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void DisplayFullClientInfo(string i_LicensePlate)
+        public string DisplayFullClientInfo(string i_LicensePlate)
         {
             GarageClient client = null;
-            Type propertiesDict = typeof(List<>);
+            string clientProperties = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 foreach (var clientProperty in client.GetType().GetProperties())
                 {
-
+                    clientProperties += string.Format("{0} ", clientProperties.ToString());
                 }
             }
+
+            return clientProperties;
         }
     }
 }
