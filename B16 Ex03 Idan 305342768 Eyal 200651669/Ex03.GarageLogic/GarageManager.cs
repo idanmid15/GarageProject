@@ -38,16 +38,17 @@ namespace Ex03.GarageLogic
             return isNewClient;
         }
 
-        public List<string> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
+        public Dictionary<string, Type> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
-            List<string> vehicleList = new List<string>();
+            Dictionary<string, Type> memberList = new Dictionary<string, Type>();
             Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
-            foreach (PropertyInfo objectMember in typeOfVehicle.GetProperties())
+            ConstructorInfo ctorInfo = typeOfVehicle.GetConstructors()[0];
+            foreach (ParameterInfo param in ctorInfo.GetParameters())
             {
                 // Receives only the name of the members without the "m_"
-                vehicleList.Add(objectMember.Name.Substring(2));
+                memberList.Add(param.Name.Substring(2), param.GetType());
             }
-            return vehicleList;
+            return memberList;
         }
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
