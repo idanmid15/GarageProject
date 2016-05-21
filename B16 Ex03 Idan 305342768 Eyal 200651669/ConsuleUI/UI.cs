@@ -37,6 +37,7 @@ namespace ConsuleUI
             else
             {
                 DisplayOutputToConsole("your vehicle is already in our garage. what would you like to do?");
+                ///user action
                 ChooseUserActions();
             }
 
@@ -74,7 +75,18 @@ namespace ConsuleUI
 
         public void ChooseUserActions(string i_UserOption)
         {
-            eUserOptions userOption = ParseUserOptions(i_UserOption);
+            eUserOptions userOption;
+            bool isValidAction = false;
+            while (!isValidAction) {
+            try
+            {
+                userOption = ParseUserOptions(i_UserOption);
+            }
+            catch (FormatException e)
+            {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
         }
 
     }
