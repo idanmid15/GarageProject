@@ -2,16 +2,16 @@
 using Ex03.GarageLogic;
 using System.Collections.Generic;
 
-namespace ConsuleUI
+namespace Ex03.ConsoleUI
 {
-    class UI
+    public class UI
     {
         public enum eUserOptions
         {
             InsertNewVehicle = 1,
             DisplayFilteredLicenses = 2,
             ChangeVehicleStatus = 3,
-            SetTires = 4,
+            InflateTires = 4,
             RefuelVehicle = 5,
             ReChargeVehicle = 6,
             DisplayCarInfo = 7

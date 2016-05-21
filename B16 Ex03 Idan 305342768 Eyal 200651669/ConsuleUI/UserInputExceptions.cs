@@ -54,10 +54,42 @@ namespace Ex03.ConsoleUI
                 case GarageManager.eSupportedVehciles.Truck:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.Truck;
                     break;
-                case default :
+                default :
                     throw new FormatException("Invalid input, must be a valid vehicle");
             }
             return vehicleTypeInput;
+        }
+
+        public static UI.eUserOptions ParseUserOptions(string i_UserOption)
+        {
+            UI.eUserOptions userOption = 0; 
+            switch ((UI.eUserOptions)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_UserOption)))
+            {
+                case UI.eUserOptions.InsertNewVehicle:
+                    userOption = UI.eUserOptions.InsertNewVehicle;
+                    break;
+                case UI.eUserOptions.DisplayFilteredLicenses:
+                    userOption = UI.eUserOptions.DisplayFilteredLicenses;
+                    break;
+                case UI.eUserOptions.ChangeVehicleStatus:
+                    userOption = UI.eUserOptions.ChangeVehicleStatus;
+                    break;
+                case UI.eUserOptions.InflateTires:
+                    userOption = UI.eUserOptions.InflateTires;
+                    break;
+                case UI.eUserOptions.RefuelVehicle:
+                    userOption = UI.eUserOptions.RefuelVehicle;
+                    break;
+                case UI.eUserOptions.ReChargeVehicle:
+                    userOption = UI.eUserOptions.ReChargeVehicle;
+                    break;
+                case UI.eUserOptions.DisplayCarInfo:
+                    userOption = UI.eUserOptions.DisplayCarInfo;
+                    break;
+                default :
+                    throw new FormatException("Invalid input, must be 1-7");
+            }
+            return userOption;
         }
     }
 }
