@@ -13,8 +13,7 @@ namespace Ex03.GarageLogic
             FueledCar,
             ElectricBike,
             FueledBike,
-            Truck,
-            Other
+            Truck
         }
 
         public Dictionary<string, GarageClient> m_GarageDictonary;
