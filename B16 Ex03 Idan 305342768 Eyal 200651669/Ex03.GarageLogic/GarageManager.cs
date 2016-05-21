@@ -22,18 +22,18 @@ namespace Ex03.GarageLogic
             m_GarageDictonary = new Dictionary<string, GarageClient>();
         }
 
-        public int ManageClient(string i_LicensePlate)
+        public bool ManageClient(string i_LicensePlate)
         {
             //1 - means the car already in the shop, 0 means new car entry
-            int returnValue = 0;
+            bool isNewClient = true;
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 client.m_Status = GarageClient.eVehicleStatus.InRepair;
-                returnValue = 1;
+                isNewClient = false;
             }
 
-            return returnValue;
+            return isNewClient;
         }
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
