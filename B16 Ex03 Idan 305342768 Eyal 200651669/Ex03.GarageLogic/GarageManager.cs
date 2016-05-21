@@ -57,9 +57,9 @@ namespace Ex03.GarageLogic
             return Activator.CreateInstance(typeOfVehicle, i_InputParameters) as Vehicle;
         } 
 
-        public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle, GarageClient.eVehicleStatus i_Status)
+        public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle)
         {
-            return new GarageClient(i_ClientName, i_ClientPhone, i_Vehicle, i_Status);
+            return new GarageClient(i_ClientName, i_ClientPhone, i_Vehicle, GarageClient.eVehicleStatus.InRepair);
         }
 
         public List<string> DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status = GarageClient.eVehicleStatus.None)
