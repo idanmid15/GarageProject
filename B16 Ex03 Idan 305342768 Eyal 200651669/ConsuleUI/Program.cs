@@ -11,10 +11,10 @@ namespace ConsuleUI
                 Environment.NewLine));
             string licensePlate = recieveInputFromConsole();
             GarageManager GarageManager = new GarageManager();
+            
             if (GarageManager.ManageClient(licensePlate) == true)
             {
-                displayOutputToConsole(string.Format("i see your car is not in out database.{0} please give us your details to recieve your car",
-                    Environment.NewLine));
+                enterNewClient();
             } else
             {
 
@@ -22,7 +22,16 @@ namespace ConsuleUI
 
         }
 
-        public 
+        public static GarageClient enterNewClient()
+        {
+
+            GarageClient client;
+            displayOutputToConsole(string.Format("i see your car is not in out database.{0} please give us your details to recieve your car",
+                Environment.NewLine));
+
+            return client;
+            
+        }
 
         public static void displayOutputToConsole(string i_Text)
         {
