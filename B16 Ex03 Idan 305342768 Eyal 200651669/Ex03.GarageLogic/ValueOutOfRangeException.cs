@@ -23,7 +23,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public ValueOutOfRangeException(float i_MinValue, float i_MaxValue) : base("Given Value is out of range.")
+        public ValueOutOfRangeException(float i_MinValue, float i_MaxValue) : base("Given Value is out of range")
         {
             m_MinValue = i_MinValue;
             m_MaxValue = i_MaxValue;
