@@ -4,9 +4,9 @@
     {
         public enum eVehicleStatus
         {
-            InRepair,
-            NotInRepair,
-            None
+            InRepair = 1,
+            NotInRepair = 2,
+            None = 3
         }
 
         public string m_ClientName;

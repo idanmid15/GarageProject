@@ -36,7 +36,7 @@ namespace Ex03.ConsoleUI
         public static GarageManager.eSupportedVehciles ParseVehicleTypeInput(string i_Input)
         {
             GarageManager.eSupportedVehciles vehicleTypeInput = 0;
-            
+
             switch ((GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input)))
             {
                 case GarageManager.eSupportedVehciles.ElectricBike:
@@ -54,7 +54,7 @@ namespace Ex03.ConsoleUI
                 case GarageManager.eSupportedVehciles.Truck:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.Truck;
                     break;
-                default :
+                default:
                     throw new FormatException("Invalid input, must be a valid vehicle");
             }
             return vehicleTypeInput;
@@ -62,7 +62,7 @@ namespace Ex03.ConsoleUI
 
         public static UI.eUserOptions ParseUserOptions(string i_UserOption)
         {
-            UI.eUserOptions userOption = 0; 
+            UI.eUserOptions userOption = 0;
             switch ((UI.eUserOptions)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_UserOption)))
             {
                 case UI.eUserOptions.InsertNewVehicle:
@@ -86,8 +86,25 @@ namespace Ex03.ConsoleUI
                 case UI.eUserOptions.DisplayCarInfo:
                     userOption = UI.eUserOptions.DisplayCarInfo;
                     break;
-                default :
+                default:
                     throw new FormatException("Invalid input, must be 1-7");
+            }
+            return userOption;
+        }
+
+        public static GarageClient.eVehicleStatus ParsevehicleDisplayFilter(string i_Input)
+        {
+            GarageClient.eVehicleStatus userOption = 0;
+            switch ((GarageClient.eVehicleStatus)(Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input)))
+            {
+                case GarageClient.eVehicleStatus.InRepair:
+                    userOption = GarageClient.eVehicleStatus.InRepair;
+                    break;
+                case GarageClient.eVehicleStatus.NotInRepair:
+                    userOption = GarageClient.eVehicleStatus.NotInRepair;
+                    break;
+                default:
+                    throw new FormatException("Invalid input, must be 1 or 2");
             }
             return userOption;
         }
