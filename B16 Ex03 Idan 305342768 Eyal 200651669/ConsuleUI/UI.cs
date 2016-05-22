@@ -54,6 +54,7 @@ namespace Ex03.ConsoleUI
             string carDetailsInput = string.Empty;
             bool isValidVehicleOption = false;
 
+            ///// Eyal, this should be pulled from the supported vehicles enum and not directly listed..
             OutputToConsole(
 @"please enter a number that matches your vehicle type from the given options
   in order to enter it to the garage:
