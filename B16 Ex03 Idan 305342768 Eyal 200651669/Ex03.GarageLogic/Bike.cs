@@ -13,6 +13,7 @@ namespace Ex03.GarageLogic
         }
 
         protected const float k_MaxTirePressure = 31;
+        protected const int k_NumOfWheels = 2;
         protected eLicenseType m_LicenseType;
         protected int m_EngineVolume;
     }

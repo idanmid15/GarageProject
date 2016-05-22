@@ -14,6 +14,7 @@
             eCarColor i_CarColor,
             eNumOfDoors i_NumOfDoors)
         {
+            this.m_NumOfWheels = k_NumOfWheels;
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
             foreach (float currentTirePressure in i_TirePressures)

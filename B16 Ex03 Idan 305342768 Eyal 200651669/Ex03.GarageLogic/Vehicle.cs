@@ -15,6 +15,8 @@ namespace Ex03.GarageLogic
 
         protected List<Wheel> m_Wheels;
 
+        protected int m_NumOfWheels;
+
         public string GetModelType()
         {
             return m_ModelType;

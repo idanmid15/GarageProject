@@ -11,6 +11,7 @@
             float[] i_TirePressures,
             float i_ChargeTimeLeft)
         {
+            this.m_NumOfWheels = k_NumOfWheels;
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
             this.m_Wheels.Add(new Wheel(i_WheelManufacturer, i_TirePressures[0], k_MaxTirePressure));

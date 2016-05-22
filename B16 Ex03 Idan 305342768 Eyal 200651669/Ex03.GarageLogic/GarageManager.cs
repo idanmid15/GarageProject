@@ -9,11 +9,11 @@ namespace Ex03.GarageLogic
     {
         public enum eSupportedVehciles
         {
-            ElectricCar,
-            FueledCar,
-            ElectricBike,
-            FueledBike,
-            Truck
+            ElectricBike = 1,
+            ElectricCar = 2,
+            FueledBike = 3,
+            FueledCar = 4,
+            Truck = 5
         }
 
         public Dictionary<string, GarageClient> m_GarageDictonary;
@@ -66,8 +66,6 @@ namespace Ex03.GarageLogic
 
         public List<string> DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status = GarageClient.eVehicleStatus.None)
         {
-            //////status execption here/////
-
             string clientLicensePlate = string.Empty;
             List<string> filteredLicensePlates = new List<string>();
             //run over each vehicle, and add to a list the filtered ones.
@@ -89,8 +87,6 @@ namespace Ex03.GarageLogic
 
         public void UpdateCarStatus(string i_LicensePlate, GarageClient.eVehicleStatus i_NewSatus)
         {
-            ////exceptions here?
-
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
@@ -117,7 +113,6 @@ namespace Ex03.GarageLogic
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                ////need execption for fuel type here! (other exceptions are taking care of
                 client.m_Vehicle.GetEngine().RePower(i_FuelAmount);
             }
         }
@@ -127,7 +122,6 @@ namespace Ex03.GarageLogic
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                ////need execption for fuel type here! (other exceptions are taking care of
                 client.m_Vehicle.GetEngine().RePower(i_MinutesToCharge);
             }
         }

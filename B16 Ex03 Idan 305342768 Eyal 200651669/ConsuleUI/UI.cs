@@ -18,62 +18,154 @@ namespace Ex03.ConsoleUI
         }
 
         GarageManager m_GarageManager;
+        GarageClient m_CurrentClient;
 
         public UI()
         {
             m_GarageManager = new GarageManager();
+            m_CurrentClient = null;
         }
 
         public void RunUI()
         {
             string userAction = string.Empty;
-            DisplayOutputToConsole(string.Format("Hello and Welcome to the garage.{0}what is your license plate number:",
+            OutputToConsole(string.Format("Hello and Welcome to the garage.{0}what is your license plate number:",
                     Environment.NewLine));
-            string licensePlate = RecieveInputFromConsole();
+            string licensePlate = InputFromConsole();
 
             if (this.m_GarageManager.ManageClient(licensePlate) == true)
             {
-                DisplayOutputToConsole("your car is'nt in our garage.");
+                OutputToConsole("your car is'nt in our garage.");
             }
             else
             {
-                DisplayOutputToConsole("what action would you like to do:");
-                userAction = RecieveInputFromConsole();
+                OutputToConsole("what action would you like to do:");
+                userAction = InputFromConsole();
                 ChooseUserActions(userAction, licensePlate);
             }
 
         }
 
-        public static GarageClient EnterNewClient()
+        public GarageClient EnterNewClient()
         {
-
-            GarageClient client;
-            string clientVehicleString = string.Empty;
-            GarageManager.eSupportedVehciles clientVehicle;
+            GarageClient client = null;
+            string clientVehicleOptionString = string.Empty;
+            GarageManager.eSupportedVehciles clientVehicle = 0;
             string carDetailsInput = string.Empty;
-            DisplayOutputToConsole(string.Format("Please give us your details so we can recieve your car",
-                Environment.NewLine));
-            clientVehicleString =
+            bool isValidVehicleOption = false;
 
+            OutputToConsole(
+@"please enter a number that matches your vehicle type from the given options
+  in order to enter it to the garage:
+1. Electric Bike
+2. Electric Car
+3. Fueled Bike
+4. Fueled Car
+5. Truck");
+            clientVehicleOptionString = InputFromConsole();
+            while (!isValidVehicleOption)
+            {
+                try
+                {
+                    clientVehicle = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString);
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+            }
 
-            Dictionary < string, Type > vehicleMembers =
-
-
-
+            Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
+            string[] clientDetails = enterNewClientDetails();
+            client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair);
             return client;
 
         }
 
+        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_VehicleType)
+        {
+            List<object> vehicleMembersList = null;
+            object[] vehicleMembersArray = null;
+            bool isMemberValid = false;
+            float[] tiresArray = null;
+            string memberInput = string.Empty;
+            float o_Result = 0;
+            Dictionary<string, Type> allVehicleMembers = this.m_GarageManager.GetVehicleMembers(i_VehicleType);
+
+            //run over all the vehicle members and ask the user to fill them
+            //it will ask to fill them until they're valid arguments
+            foreach (KeyValuePair<string, Type> vehicleMember in allVehicleMembers)
+            {
+                OutputToConsole(string.Format("enter {0}:", vehicleMember.Key));
+                while (!isMemberValid) {
+                    try
+                    {
+                        //in case we've reached the part where we need to insert all tires pressures
+                        if (vehicleMember.Value.Equals(typeof(float[])))
+                        {
+                            ///****TODO: how to get the number of wheels per vehicle type********///
+                            tiresArray = enterNewTiresArray();
+                        } else
+                        {
+                            memberInput = InputFromConsole();
+                        }
+
+                    } catch (Exception e) {
+                        ///********TODO:need to solve how to enter the correct type of exception**********
+                    }
+                }
+
+                vehicleMembersList.Add(memberInput);
+            }
+
+            //create a new vehicle with all relevant params for the specific car type given
+            vehicleMembersArray = vehicleMembersList.ToArray();
+            Vehicle newVehicle = this.m_GarageManager.CreateVehicle(i_VehicleType, vehicleMembersArray);
+            return newVehicle;
+        }
+
+        private float[] enterNewTiresArray()
+        {
+            float[] tiresArray = new float[??????];
+            string memberInput = string.Empty;
+            float o_Tire;
+
+            for (int i = 0; i < tiresArray.Length; i++)
+            {
+                OutputToConsole(string.Format("enter pressure of tire No. {0}:", i));
+                memberInput = InputFromConsole();
+                if (Single.TryParse(memberInput, out o_Tire))
+                {
+                    tiresArray[i] = o_Tire;
+                }
+            }
+
+            return tiresArray;
+        }
+
+        private string[] enterNewClientDetails()
+        {
+            string[] clientDetails = new string[2];
+            OutputToConsole("enter your name:");
+            clientDetails[0] = InputFromConsole();
+            OutputToConsole("enter your phone number:");
+            clientDetails[1] = InputFromConsole();
+
+            return clientDetails;
+        }
+
+
         public void DisplayFilteredGarageVehicles()
         {
-            DisplayOutputToConsole(string.Format("would you like to filter the type of cars to display?{0}Type 1- for in repair staus{0}Type 2 - for not in repair", System.Environment.NewLine));
+            OutputToConsole(string.Format("would you like to filter the type of cars to display?{0}Type 1- for in repair staus{0}Type 2 - for not in repair", System.Environment.NewLine));
             bool isValidFilter = false;
             GarageClient.eVehicleStatus vehicleDisplayFilter;
             while (!isValidFilter)
             {
                 try
                 {
-                    vehicleDisplayFilter = UserInputExceptions.ParsevehicleDisplayFilter(RecieveInputFromConsole());
+                    vehicleDisplayFilter = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
                     this.m_GarageManager.DisplayVehcilesInGarage(vehicleDisplayFilter);
                 }
                 catch (FormatException e)
@@ -85,11 +177,32 @@ namespace Ex03.ConsoleUI
 
         }
 
+        public void updateVehicleStatus(string i_LicensePlate)
+        {
+            bool isValidFilter = false;
+            GarageClient.eVehicleStatus newStatus;
+            while (!isValidFilter)
+            {
+                try
+                {
+                    OutputToConsole(string.Format("what is the new status of the vehicle?{0}Type 1- for in repair staus{0}Type 2 - for not in repair", System.Environment.NewLine));
+                    newStatus = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
+                    this.m_GarageManager.DisplayVehcilesInGarage(newStatus);
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+                this.m_GarageManager.UpdateCarStatus(i_LicensePlate, newStatus);
+            }
+        }
+
         public void ChooseUserActions(string i_UserOption, string i_LicensePlate)
         {
             eUserOptions userOption = eUserOptions.InsertNewVehicle;
             bool isValidAction = false;
-            DisplayOutputToConsole(
+            OutputToConsole(
 @"Choose the action you would like to make (by entering it's number):
 1. Insert a new vehicle
 2. Display lisence plates in garage (filtered)
@@ -122,31 +235,41 @@ namespace Ex03.ConsoleUI
                     DisplayFilteredGarageVehicles();
                     break;
                 case UI.eUserOptions.ChangeVehicleStatus:
-                    this.m_GarageManager.UpdateCarStatus(i_LicensePlate);
+                    updateVehicleStatus(i_LicensePlate);
                     break;
                 case UI.eUserOptions.InflateTires:
                     this.m_GarageManager.SetTirePressureToMax(i_LicensePlate);
                     break;
                 case UI.eUserOptions.RefuelVehicle:
-                    this.m_GarageManager.FuelVehcile(i_LicensePlate);
+                    if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
+                        ///**********TODO:how to get fuel type************
+                    this.m_GarageManager.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine()........
+                    }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
-                    this.m_GarageManager.ChargeVehicle(i_LicensePlate);
+                    OutputToConsole("enter amout of time to charge vehicle:");
+                    float o_TimeToCharge;
+                    bool isValidChargeTime = float.TryParse(InputFromConsole(), out o_TimeToCharge);
+                    if (isValidChargeTime)
+                    {
+                        this.m_GarageManager.ChargeVehicle(i_LicensePlate , o_TimeToCharge);
+                    }
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
                     this.m_GarageManager.GetFullClientInfo(i_LicensePlate);
+                    break;
             }
 
         }
 
-        public static void DisplayOutputToConsole(string i_Text)
+        public static void OutputToConsole(string i_Text)
         {
-            System.Console.WriteLine(i_Text);
+            Console.WriteLine(i_Text);
         }
 
-        public static string RecieveInputFromConsole()
+        public static string InputFromConsole()
         {
-            return System.Console.ReadLine();
+            return Console.ReadLine();
         }
     }
 }

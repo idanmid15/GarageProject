@@ -13,6 +13,7 @@
             float[] i_TirePressures,
             float i_ChargeTimeLeft)
         {
+            this.m_NumOfWheels = k_NumOfWheels;
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
             foreach (float currentTirePressure in i_TirePressures)

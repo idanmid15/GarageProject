@@ -1,11 +1,13 @@
-﻿namespace ConsuleUI
+﻿using Ex03.ConsoleUI;
+
+namespace ConsuleUI
 {
     class Program
     {
         static void Main(string[] args)
         {
-            UI UI = new UI();
-            UI.RunUI();
+            UI Ui = new UI();
+            Ui.RunUI();
         }
     }
 }

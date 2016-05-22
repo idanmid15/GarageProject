@@ -3,6 +3,7 @@
     public class Truck : Vehicle
     {
         protected const float k_MaxTirePressure = 28;
+        protected const int k_NumOfWheels = 16;
         protected const FueledEngine.eFuelType k_FuelType = FueledEngine.eFuelType.Soler;
         private const float k_MaxFuelCapacity = 135f;
 
@@ -14,6 +15,7 @@
          FueledEngine.eFuelType i_FuelType,
          float i_CurrentFuelAmount)
         {
+            this.m_NumOfWheels = k_NumOfWheels;
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
 
