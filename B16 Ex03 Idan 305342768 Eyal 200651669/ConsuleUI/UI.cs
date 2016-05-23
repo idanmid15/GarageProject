@@ -17,6 +17,13 @@ namespace Ex03.ConsoleUI
             DisplayCarInfo = 7
         }
 
+        public enum eNumberOfWheelsPerVehicle
+        {
+            Bike = 2,
+            Car = 4,
+            Truck = 16
+        }
+
         GarageManager m_GarageManager;
         GarageClient m_CurrentClient;
 

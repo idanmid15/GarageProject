@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
-    public class Vehicle
+    public abstract class Vehicle
     {
         protected string m_ModelType;
 
@@ -16,6 +16,10 @@ namespace Ex03.GarageLogic
         protected List<Wheel> m_Wheels;
 
         protected int m_NumOfWheels;
+
+        protected string m_WheelManufacturer;
+
+        public abstract List<memberTranslator> GetAllVehicleMembers();
 
         public string GetModelType()
         {
@@ -40,6 +44,11 @@ namespace Ex03.GarageLogic
         public Engine GetEngine()
         {
             return m_Engine;
+        }
+
+        public string GetWheelManufacturer()
+        {
+            return m_WheelManufacturer;
         }
     }
 }
