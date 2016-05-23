@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -24,5 +25,10 @@ namespace Ex03.GarageLogic
         protected const int k_NumOfWheels = 4;
         protected eCarColor m_CarColor;
         protected eNumOfDoors m_NumOfDoors;
+
+        public override List<MemberTranslator> GetAllVehicleMembers()
+        {
+            return null;
+        }
     }
 }

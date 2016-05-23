@@ -99,28 +99,20 @@ namespace Ex03.ConsoleUI
             float[] tiresArray = null;
             string memberInput = string.Empty;
             float o_Result = 0;
-            Dictionary<string, Type> allVehicleMembers = this.m_GarageManager.GetVehicleMembers(i_VehicleType);
+            List<MemberTranslator> allVehicleMembers = this.m_GarageManager.GetVehicleMembers(i_VehicleType);
 
             //run over all the vehicle members and ask the user to fill them
             //it will ask to fill them until they're valid arguments
-            foreach (KeyValuePair<string, Type> vehicleMember in allVehicleMembers)
+            foreach (MemberTranslator vehicleMember in allVehicleMembers)
             {
-                OutputToConsole(string.Format("enter {0}:", vehicleMember.Key));
+                OutputToConsole(string.Format("enter {0}:", vehicleMember.m_MemberTranslation));
                 while (!isMemberValid) {
                     try
                     {
-                        //in case we've reached the part where we need to insert all tires pressures
-                        if (vehicleMember.Value.Equals(typeof(float[])))
-                        {
-                            ///****TODO: how to get the number of wheels per vehicle type********///
-                            tiresArray = enterNewTiresArray();
-                        } else
-                        {
-                            memberInput = InputFromConsole();
-                        }
-
+                        memberInput = InputFromConsole();
+                        ExceptionParser(memberInput, vehicleMember.m_MemberType);                     
                     } catch (Exception e) {
-                        ///********TODO:need to solve how to enter the correct type of exception**********
+                        OutputToConsole(e.Message);
                     }
                 }
 
@@ -133,9 +125,38 @@ namespace Ex03.ConsoleUI
             return newVehicle;
         }
 
+        private void ExceptionParser(string i_Input, Type i_Type)
+        {
+            switch (i_Type.ToString())
+            {
+                case "float":
+                    UserInputExceptions.ParseFloatInput(i_Input);
+                    break;
+                case "int":
+                    UserInputExceptions.ParseIntegerInput(i_Input);
+                    break;
+                case "bool":
+                    UserInputExceptions.ParseToxicInput(i_Input);
+                    break;
+                case "eLicenseType":
+                    UserInputExceptions.ParseLicenseTypeInput(i_Input);
+                    break;
+                case "eCarColor":
+                    UserInputExceptions.ParseCarColorInput(i_Input);
+                    break;
+                case "eNumOfDoors":
+                    UserInputExceptions.ParseNumOfDoorsInput(i_Input);
+                    break;
+                case "FueledEngine.eFuelType":
+                    UserInputExceptions.ParseFuelTypeInput(i_Input);
+                    break; 
+
+            }
+        }
+
         private float[] enterNewTiresArray()
         {
-            float[] tiresArray = new float[??????];
+           // float[] tiresArray = new float[??????];
             string memberInput = string.Empty;
             float o_Tire;
 
@@ -251,7 +272,7 @@ namespace Ex03.ConsoleUI
                 case UI.eUserOptions.RefuelVehicle:
                     if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
                         ///**********TODO:how to get fuel type************
-                    this.m_GarageManager.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine()........
+                        this.m_GarageManager.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:

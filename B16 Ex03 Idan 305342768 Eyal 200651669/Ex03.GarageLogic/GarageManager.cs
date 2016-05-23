@@ -37,16 +37,35 @@ namespace Ex03.GarageLogic
             return isNewClient;
         }
         
-        public Dictionary<string, Type> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
+        public List<MemberTranslator> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
-            Dictionary<string, Type> memberList = new Dictionary<string, Type>();
+            Vehicle vehicleInstance = null;
+            List<MemberTranslator> memberList = new List<MemberTranslator>();
             Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
-            ConstructorInfo ctorInfo = typeOfVehicle.GetConstructors()[0];
-            foreach (ParameterInfo param in ctorInfo.GetParameters())
+            
+            //beacuse we can't opreate the method GetAllVehicleMembers on return value of  Activator.CreateInstance(typeOfVehicle)
+            //maybe there's a better not hard coded solution, but i didnt find a proper one.
+            switch (i_SupportedVehicle)
             {
-                // Receives only the name of the members without the "m_"
-                memberList.Add(param.Name.Substring(2), param.GetType());
+                case eSupportedVehciles.ElectricBike:
+                    vehicleInstance = (ElectricBike) Activator.CreateInstance(typeOfVehicle);
+                    break;
+                case eSupportedVehciles.ElectricCar:
+                    vehicleInstance = (ElectricCar)Activator.CreateInstance(typeOfVehicle);
+                    break;
+                case eSupportedVehciles.FueledBike:
+                    vehicleInstance = (FueledBike)Activator.CreateInstance(typeOfVehicle);
+                    break;
+                case eSupportedVehciles.FueledCar:
+                    vehicleInstance = (FueledCar)Activator.CreateInstance(typeOfVehicle);
+                    break;
+                case eSupportedVehciles.Truck:
+                    vehicleInstance = (Truck)Activator.CreateInstance(typeOfVehicle);
+                    break;
             }
+
+            
+            memberList = vehicleInstance.GetAllVehicleMembers();
             return memberList;
         }
 

@@ -46,7 +46,7 @@
     <Compile Include="FueledEngine.cs" />
     <Compile Include="GarageClient.cs" />
     <Compile Include="GarageManager.cs" />
-    <Compile Include="memberTranslator.cs" />
+    <Compile Include="MemberTranslator.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicle.cs" />

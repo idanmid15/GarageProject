@@ -5,15 +5,15 @@ namespace Ex03.GarageLogic
     public class FueledBike : Bike
     {
         private const float k_MaxFueledEngine = 7.2f;
-        List<memberTranslator> k_VehicleMembersList = new List<memberTranslator>
+        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
-            new memberTranslator("m_ModelType", "model type", typeof(string)),
-            new memberTranslator("m_LicensePlate", "license plate", typeof(string)),
-            new memberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new memberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
-            new memberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
-            new memberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
-            new memberTranslator("m_EngineVolume", "engine volume", typeof(int)),
+            new MemberTranslator("m_ModelType", "model type", typeof(string)),
+            new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
+            new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
+            new MemberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
+            new MemberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
+            new MemberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
+            new MemberTranslator("m_EngineVolume", "engine volume", typeof(int)),
         };
 
         public FueledBike()
@@ -21,7 +21,7 @@ namespace Ex03.GarageLogic
             this.m_NumOfWheels = k_NumOfWheels;
         }
 
-        public override List<memberTranslator> GetAllVehicleMembers()
+        public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
         }

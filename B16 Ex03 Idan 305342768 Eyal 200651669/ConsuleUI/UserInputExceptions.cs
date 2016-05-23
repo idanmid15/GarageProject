@@ -108,5 +108,22 @@ namespace Ex03.ConsoleUI
             }
             return userOption;
         }
+
+        public static GarageClient.eVehicleStatus ParsevehicleDisplayFilter(string i_Input)
+        {
+            GarageClient.eVehicleStatus userOption = 0;
+            switch ((GarageClient.eVehicleStatus)(Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input)))
+            {
+                case GarageClient.eVehicleStatus.InRepair:
+                    userOption = GarageClient.eVehicleStatus.InRepair;
+                    break;
+                case GarageClient.eVehicleStatus.NotInRepair:
+                    userOption = GarageClient.eVehicleStatus.NotInRepair;
+                    break;
+                default:
+                    throw new FormatException("Invalid input, must be 1 or 2");
+            }
+            return userOption;
+        }
     }
 }

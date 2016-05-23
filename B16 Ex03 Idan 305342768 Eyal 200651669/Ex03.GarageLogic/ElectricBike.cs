@@ -7,14 +7,14 @@ namespace Ex03.GarageLogic
     public class ElectricBike : Bike
     {
         private const float k_MaxChargeTime = 1.9f;
-        List<memberTranslator> k_VehicleMembersList = new List<memberTranslator>
+        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
-            new memberTranslator("m_ModelType", "model type", typeof(string)),
-            new memberTranslator("m_LicensePlate", "license plate", typeof(string)),
-            new memberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new memberTranslator("m_ChargeTimeLeft", "charge time left", typeof(float)),
-            new memberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
-            new memberTranslator("m_EngineVolume", "engine volume", typeof(int)),
+            new MemberTranslator("m_ModelType", "model type", typeof(string)),
+            new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
+            new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
+            new MemberTranslator("m_ChargeTimeLeft", "charge time left", typeof(float)),
+            new MemberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
+            new MemberTranslator("m_EngineVolume", "engine volume", typeof(int)),
         };
 
 
@@ -23,7 +23,7 @@ namespace Ex03.GarageLogic
             this.m_NumOfWheels = k_NumOfWheels;           
         }
 
-        public override List<memberTranslator>  GetAllVehicleMembers()
+        public override List<MemberTranslator>  GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
         }

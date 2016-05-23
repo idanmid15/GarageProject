@@ -5,14 +5,14 @@ namespace Ex03.GarageLogic
     public class ElectricCar : Car
     {
         private const float k_MaxChargeTime = 3.3f;
-        List<memberTranslator> k_VehicleMembersList = new List<memberTranslator>
+        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
-            new memberTranslator("m_ModelType", "model type", typeof(string)),
-            new memberTranslator("m_LicensePlate", "license plate", typeof(string)),
-            new memberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new memberTranslator("m_CarColor", "car color", typeof(eCarColor)),
-            new memberTranslator("m_NumOfDoors", "number of doors", typeof(eNumOfDoors)),
-            new memberTranslator("m_EnergyPrecentageLeft", "fuel amount left", typeof(float)),
+            new MemberTranslator("m_ModelType", "model type", typeof(string)),
+            new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
+            new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
+            new MemberTranslator("m_CarColor", "car color", typeof(eCarColor)),
+            new MemberTranslator("m_NumOfDoors", "number of doors", typeof(eNumOfDoors)),
+            new MemberTranslator("m_EnergyPrecentageLeft", "fuel amount left", typeof(float)),
         };
 
         public ElectricCar()
@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             this.m_NumOfWheels = k_NumOfWheels;
         }
 
-        public override List<memberTranslator> GetAllVehicleMembers()
+        public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
         }

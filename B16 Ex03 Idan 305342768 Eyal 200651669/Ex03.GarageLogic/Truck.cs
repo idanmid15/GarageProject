@@ -9,14 +9,14 @@ namespace Ex03.GarageLogic
         protected const FueledEngine.eFuelType k_FuelType = FueledEngine.eFuelType.Soler;
         private const float k_MaxFuelCapacity = 135f;
         protected bool m_IsCarryingToxic;
-        List<memberTranslator> k_VehicleMembersList = new List<memberTranslator>
+        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
-            new memberTranslator("m_ModelType", "model type", typeof(string)),
-            new memberTranslator("m_LicensePlate", "license plate", typeof(string)),
-            new memberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new memberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
-            new memberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
-            new memberTranslator("m_IsCarryingToxic", "does the truck carring toxic metarials", typeof(bool)),
+            new MemberTranslator("m_ModelType", "model type", typeof(string)),
+            new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
+            new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
+            new MemberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
+            new MemberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
+            new MemberTranslator("m_IsCarryingToxic", "does the truck carring toxic metarials", typeof(bool)),
         };
 
         public Truck()
@@ -24,7 +24,7 @@ namespace Ex03.GarageLogic
             this.m_NumOfWheels = k_NumOfWheels;
         }
 
-        public override List<memberTranslator> GetAllVehicleMembers()
+        public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
         }
