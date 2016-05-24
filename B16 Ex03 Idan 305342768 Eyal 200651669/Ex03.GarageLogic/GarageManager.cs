@@ -39,33 +39,17 @@ namespace Ex03.GarageLogic
         
         public List<MemberTranslator> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
-            Vehicle vehicleInstance = null;
+            //the method returns a list of all parametrs of specific constructor as <paramName, paramType>
+            //the ui will translate each name to a string for the user input
             List<MemberTranslator> memberList = new List<MemberTranslator>();
             Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
-            
-            //beacuse we can't opreate the method GetAllVehicleMembers on return value of  Activator.CreateInstance(typeOfVehicle)
-            //maybe there's a better not hard coded solution, but i didnt find a proper one.
-            switch (i_SupportedVehicle)
+            var ctor = typeOfVehicle.GetType().GetConstructors()[0];
+            Vehicle vehicleInstance = ctor.Invoke(ctor.GetParameters()) as Vehicle;
+            foreach (var param in ctor.GetParameters())
             {
-                case eSupportedVehciles.ElectricBike:
-                    vehicleInstance = (ElectricBike) Activator.CreateInstance(typeOfVehicle);
-                    break;
-                case eSupportedVehciles.ElectricCar:
-                    vehicleInstance = (ElectricCar)Activator.CreateInstance(typeOfVehicle);
-                    break;
-                case eSupportedVehciles.FueledBike:
-                    vehicleInstance = (FueledBike)Activator.CreateInstance(typeOfVehicle);
-                    break;
-                case eSupportedVehciles.FueledCar:
-                    vehicleInstance = (FueledCar)Activator.CreateInstance(typeOfVehicle);
-                    break;
-                case eSupportedVehciles.Truck:
-                    vehicleInstance = (Truck)Activator.CreateInstance(typeOfVehicle);
-                    break;
+                MemberTranslator currentMember = new MemberTranslator(param.Name, param.ParameterType);
+                memberList.Add(currentMember);
             }
-
-            
-            memberList = vehicleInstance.GetAllVehicleMembers();
             return memberList;
         }
 

@@ -5,7 +5,7 @@ namespace Ex03.GarageLogic
     public class ElectricCar : Car
     {
         private const float k_MaxChargeTime = 3.3f;
-        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
+      /*  List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
             new MemberTranslator("m_ModelType", "model type", typeof(string)),
             new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
@@ -24,8 +24,8 @@ namespace Ex03.GarageLogic
         {
             return k_VehicleMembersList;
         }
-
-        public void ConstructVehicle(
+        */
+        public ElectricCar(
             string i_ModelType,
             string i_LicensePlate,
             eCarColor i_CarColor,

@@ -17,12 +17,30 @@ namespace Ex03.ConsoleUI
             DisplayCarInfo = 7
         }
 
-        public enum eNumberOfWheelsPerVehicle
+        public Dictionary<string, int> NumOfWheelsPerVehicle = new Dictionary<string, int>
         {
-            Bike = 2,
-            Car = 4,
-            Truck = 16
-        }
+            {"ElectricBike", 2},
+            {"ElectricCar", 4},
+            {"FueledBike", 2},
+            {"FueledCar", 4},
+            {"Truck", 16}
+        };
+
+        public Dictionary<string, string> membersTranslationDictionary = new Dictionary<string, string>()
+        {
+            {"i_ModelType", "model type"},
+            {"i_LicensePlate", "license plate"},
+            {"i_WheelManufacturer", "wheels Manufacturer"},
+            {"i_FuelType", "fuel type"},
+            {"i_CurrentFuelAmount", "current fuel amount"},
+            {"i_LicenseType", "license type"},
+            {"i_EngineVolume", "engine volume"},
+            {"i_ChargeTimeLeft", "charge time left"},
+            {"i_IsCarryingToxic", "does the truck carring toxic metarials"},
+            {"i_CarColor", "car color"},
+            {"i_NumOfDoors", "number of doors"},
+            {"i_TirePressures" , "pressure for each wheel"}
+        };
 
         GarageManager m_GarageManager;
         GarageClient m_CurrentClient;
@@ -43,6 +61,7 @@ namespace Ex03.ConsoleUI
             if (this.m_GarageManager.ManageClient(licensePlate) == true)
             {
                 OutputToConsole("your car is'nt in our garage.");
+                this.m_CurrentClient = EnterNewClient();
             }
             else
             {
@@ -98,31 +117,44 @@ namespace Ex03.ConsoleUI
             bool isMemberValid = false;
             float[] tiresArray = null;
             string memberInput = string.Empty;
-            float o_Result = 0;
-            List<MemberTranslator> allVehicleMembers = this.m_GarageManager.GetVehicleMembers(i_VehicleType);
+            int o_ResultTires = 0;
+            string o_ResultMembers = string.Empty;
 
-            //run over all the vehicle members and ask the user to fill them
-            //it will ask to fill them until they're valid arguments
-            foreach (MemberTranslator vehicleMember in allVehicleMembers)
+            Type typeOfVehicle = Type.GetType(i_VehicleType.ToString());
+            var ctor = typeOfVehicle.GetType().GetConstructors()[0];
+            foreach (var param in ctor.GetParameters())
             {
-                OutputToConsole(string.Format("enter {0}:", vehicleMember.m_MemberTranslation));
-                while (!isMemberValid) {
+                //filling the tires requires a different method to form a "tires array"
+                if (param.Name.Equals("i_TirePressures")) {
+                    if (NumOfWheelsPerVehicle.TryGetValue(i_VehicleType.ToString(), out o_ResultTires)){
+                        tiresArray = enterNewTiresArray(o_ResultTires);
+                        isMemberValid = true;
+                    }
+                //for all the rest of the members
+                } else {
+                    OutputToConsole(string.Format("enter {0}:", membersTranslationDictionary.TryGetValue(param.Name, out o_ResultMembers)));
+                    isMemberValid = false;
+                }
+                while (!isMemberValid)
+                {
                     try
                     {
                         memberInput = InputFromConsole();
-                        ExceptionParser(memberInput, vehicleMember.m_MemberType);                     
-                    } catch (Exception e) {
+                        ExceptionParser(memberInput, param.ParameterType);
+                    }
+                    catch (Exception e)
+                    {
                         OutputToConsole(e.Message);
                     }
                 }
-
                 vehicleMembersList.Add(memberInput);
+
             }
 
-            //create a new vehicle with all relevant params for the specific car type given
+            //create a new vehicle instance with all relevant params for the specific car type given
             vehicleMembersArray = vehicleMembersList.ToArray();
-            Vehicle newVehicle = this.m_GarageManager.CreateVehicle(i_VehicleType, vehicleMembersArray);
-            return newVehicle;
+            Vehicle vehicleInstance = ctor.Invoke(vehicleMembersArray) as Vehicle;
+            return vehicleInstance;
         }
 
         private void ExceptionParser(string i_Input, Type i_Type)
@@ -135,7 +167,7 @@ namespace Ex03.ConsoleUI
                 case "int":
                     UserInputExceptions.ParseIntegerInput(i_Input);
                     break;
-                case "bool":
+             /*   case "bool":
                     UserInputExceptions.ParseToxicInput(i_Input);
                     break;
                 case "eLicenseType":
@@ -149,24 +181,35 @@ namespace Ex03.ConsoleUI
                     break;
                 case "FueledEngine.eFuelType":
                     UserInputExceptions.ParseFuelTypeInput(i_Input);
-                    break; 
+                    break;*/
+                default:
+                    OutputToConsole("not a valid argument");
+                    break;
 
             }
         }
 
-        private float[] enterNewTiresArray()
+        private float[] enterNewTiresArray(int i_NumOfWheels)
         {
-           // float[] tiresArray = new float[??????];
+            float[] tiresArray = new float[i_NumOfWheels];
             string memberInput = string.Empty;
             float o_Tire;
+            bool isValid = false;
 
             for (int i = 0; i < tiresArray.Length; i++)
             {
                 OutputToConsole(string.Format("enter pressure of tire No. {0}:", i));
-                memberInput = InputFromConsole();
-                if (Single.TryParse(memberInput, out o_Tire))
+                while (!isValid)
                 {
-                    tiresArray[i] = o_Tire;
+                    memberInput = InputFromConsole();
+                    if (Single.TryParse(memberInput, out o_Tire))
+                    {
+                        tiresArray[i] = o_Tire;
+                        isValid = true;
+                    }else
+                    {
+                        OutputToConsole("wheel pressure must be a positive float number");
+                    }
                 }
             }
 
@@ -272,7 +315,7 @@ namespace Ex03.ConsoleUI
                 case UI.eUserOptions.RefuelVehicle:
                     if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
                         ///**********TODO:how to get fuel type************
-                        this.m_GarageManager.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
+                        this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:

@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         protected const FueledEngine.eFuelType k_FuelType = FueledEngine.eFuelType.Soler;
         private const float k_MaxFuelCapacity = 135f;
         protected bool m_IsCarryingToxic;
-        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
+      /*  List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
             new MemberTranslator("m_ModelType", "model type", typeof(string)),
             new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
@@ -27,9 +27,9 @@ namespace Ex03.GarageLogic
         public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
-        }
+        }*/
 
-        public void ConstructVehicle(
+        public Truck(
          string i_ModelType,
          string i_LicensePlate,
          string i_WheelManufacturer,
