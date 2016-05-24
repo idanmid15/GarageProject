@@ -76,7 +76,7 @@ namespace Ex03.ConsoleUI
         {
             GarageClient client = null;
             string clientVehicleOptionString = string.Empty;
-            Type clientVehicleType = null;
+            GarageManager.eSupportedVehciles clientVehicle = 0;
             string carDetailsInput = string.Empty;
             bool isValidVehicleOption = false;
 
@@ -94,25 +94,23 @@ namespace Ex03.ConsoleUI
             {
                 try
                 {
-                    clientVehicleType = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString, this.m_GarageManager);
+                    clientVehicle = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString);
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine(e.Message);
                     continue;
                 }
-                isValidVehicleOption = true;
             }
 
-            m_GarageManager.GetVehicleMembers(GarageManager.eSupportedVehciles.ElectricBike);
-            Vehicle newVehicle = enterNewVehicleMembers(clientVehicleType);
+            Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
             string[] clientDetails = enterNewClientDetails();
             client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair);
             return client;
 
         }
 
-        private Vehicle enterNewVehicleMembers(Type i_VehicleType)
+        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_VehicleType)
         {
             List<object> vehicleMembersList = null;
             object[] vehicleMembersArray = null;
@@ -122,9 +120,8 @@ namespace Ex03.ConsoleUI
             int o_ResultTires = 0;
             string o_ResultMembers = string.Empty;
 
-            Type typeOfVehicle = i_VehicleType;
-            var ctor = i_VehicleType.GetType().GetConstructors()[0];
-            //Vehicle item = Activator.CreateInstance(typeOfVehicle.GetType()) as Vehicle;
+            Type typeOfVehicle = Type.GetType(i_VehicleType.ToString());
+            var ctor = typeOfVehicle.GetType().GetConstructors()[0];
             foreach (var param in ctor.GetParameters())
             {
                 //filling the tires requires a different method to form a "tires array"
@@ -318,8 +315,7 @@ namespace Ex03.ConsoleUI
                 case UI.eUserOptions.RefuelVehicle:
                     if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
                         ///**********TODO:how to get fuel type************
-                        // this.m_GarageManager.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
-                        break;
+                        this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
