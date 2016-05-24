@@ -47,7 +47,7 @@ namespace Ex03.GarageLogic
             Vehicle vehicleInstance = ctor.Invoke(ctor.GetParameters()) as Vehicle;
             foreach (var param in ctor.GetParameters())
             {
-                MemberTranslator currentMember = new MemberTranslator(param.Name, param.ParameterType);
+                MemberTranslator currentMember = new MemberTranslator(param.Name,  "ddd",param.ParameterType);
                 memberList.Add(currentMember);
             }
             return memberList;

@@ -26,9 +26,9 @@ namespace Ex03.GarageLogic
         protected eCarColor m_CarColor;
         protected eNumOfDoors m_NumOfDoors;
 
-        public override List<MemberTranslator> GetAllVehicleMembers()
+       /* public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return null;
-        }
+        }*/
     }
 }

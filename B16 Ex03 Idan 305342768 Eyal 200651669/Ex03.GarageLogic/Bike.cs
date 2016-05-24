@@ -18,9 +18,9 @@ namespace Ex03.GarageLogic
         protected eLicenseType m_LicenseType;
         protected int m_EngineVolume;
 
-        public override List<MemberTranslator> GetAllVehicleMembers()
+       /* public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return null;
-        }
+        }*/
     }
 }

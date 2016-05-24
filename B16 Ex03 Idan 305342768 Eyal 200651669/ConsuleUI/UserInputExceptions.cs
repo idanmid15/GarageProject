@@ -33,26 +33,43 @@ namespace Ex03.ConsoleUI
             return integerInput;
         }
 
-        public static GarageManager.eSupportedVehciles ParseVehicleTypeInput(string i_Input)
+        public static Type ParseVehicleTypeInput(string i_Input, GarageManager i_GarageManager)
         {
-            GarageManager.eSupportedVehciles vehicleTypeInput = 0;
-
-            switch ((GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input)))
+            Type vehicleTypeInput =null;
+            Type o_Result = null;
+            GarageManager.eSupportedVehciles typeOfInput = (GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input));
+            switch (typeOfInput)
             {
                 case GarageManager.eSupportedVehciles.ElectricBike:
-                    vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricBike;
+                    //vehicleTypeInput = typeof(GarageManager.eSupportedVehciles.ElectricBike;
+                    if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
+                    {
+                        vehicleTypeInput = o_Result;
+                    }
                     break;
                 case GarageManager.eSupportedVehciles.ElectricCar:
-                    vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricCar;
+                    if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
+                    {
+                        vehicleTypeInput = o_Result;
+                    }
                     break;
                 case GarageManager.eSupportedVehciles.FueledBike:
-                    vehicleTypeInput = GarageManager.eSupportedVehciles.FueledBike;
+                    if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
+                    {
+                        vehicleTypeInput = o_Result;
+                    }
                     break;
                 case GarageManager.eSupportedVehciles.FueledCar:
-                    vehicleTypeInput = GarageManager.eSupportedVehciles.FueledCar;
+                    if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
+                    {
+                        vehicleTypeInput = o_Result;
+                    }
                     break;
                 case GarageManager.eSupportedVehciles.Truck:
-                    vehicleTypeInput = GarageManager.eSupportedVehciles.Truck;
+                    if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
+                    {
+                        vehicleTypeInput = o_Result;
+                    }
                     break;
                 default:
                     throw new FormatException("Invalid input, must be a valid vehicle");
