@@ -115,30 +115,26 @@ namespace Ex03.ConsoleUI
         private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle)
         {
             List<MemberTranslator> vehicleMembersList = null;
+            List<string> membersFromInputList = new List<string>();
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
             float[] tiresArray = null;
             string memberInput = string.Empty;
-            int o_ResultTires = 0;
             string o_ResultMembers = string.Empty;
 
             vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
 
-            return null;
-
-            //Type typeOfVehicle = Type.GetType(i_VehicleType.ToString());
-           /** var ctor = typeOfVehicle.GetType().GetConstructors()[0];
-            foreach (var param in ctor.GetParameters())
+            foreach (MemberTranslator param in vehicleMembersList)
             {
                 //filling the tires requires a different method to form a "tires array"
-                if (param.Name.Equals("i_TirePressures")) {
-                    if (NumOfWheelsPerVehicle.TryGetValue(i_VehicleType.ToString(), out o_ResultTires)){
-                        tiresArray = enterNewTiresArray(o_ResultTires);
+                if (param.m_MemberName.Equals("m_TirePressures")) {
+                   // if (NumOfWheelsPerVehicle.TryGetValue(i_VehicleType.ToString(), out o_ResultTires)){
+                   tiresArray = enterNewTiresArray(2);
                         isMemberValid = true;
-                    }
+                    //}
                 //for all the rest of the members
                 } else {
-                    OutputToConsole(string.Format("enter {0}:", membersTranslationDictionary.TryGetValue(param.Name, out o_ResultMembers)));
+                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));      
                     isMemberValid = false;
                 }
                 while (!isMemberValid)
@@ -146,21 +142,21 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        ExceptionParser(memberInput, param.ParameterType);
+                        ExceptionParser(memberInput, param.m_MemberType);
                     }
                     catch (Exception e)
                     {
                         OutputToConsole(e.Message);
                     }
                 }
-                vehicleMembersList.Add(memberInput);
+                membersFromInputList.Add(memberInput);
 
             }
 
             //create a new vehicle instance with all relevant params for the specific car type given
-            vehicleMembersArray = vehicleMembersList.ToArray();
-            Vehicle vehicleInstance = ctor.Invoke(vehicleMembersArray) as Vehicle;
-            return vehicleInstance;*/
+            vehicleMembersArray = membersFromInputList.ToArray();
+            Vehicle vehicleInstance = this.m_GarageManager.CreateVehicle(i_SupportedVehicle, vehicleMembersArray);
+            return vehicleInstance;
         }
 
         private void ExceptionParser(string i_Input, Type i_Type)

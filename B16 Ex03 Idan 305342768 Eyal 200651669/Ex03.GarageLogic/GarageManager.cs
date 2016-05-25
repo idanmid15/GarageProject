@@ -65,7 +65,7 @@ namespace Ex03.GarageLogic
                 MemberTranslator currentMember = new MemberTranslator(param.Name, "fff", param.ParameterType);
                 memberList.Add(currentMember);
             }*/
-            return memberList;
+            return v.GetAllVehicleMembers();
         }
 
         public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, Object[] i_InputParameters)
