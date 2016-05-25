@@ -18,9 +18,22 @@ namespace Ex03.GarageLogic
 
         public Dictionary<string, GarageClient> m_GarageDictonary;
 
+      /*  public Dictionary<GarageManager.eSupportedVehciles, Type> SupportedTypesDictionary = new Dictionary<GarageManager.eSupportedVehciles, Type>()
+        {
+            {eSupportedVehciles.ElectricBike, typeof(ElectricBike)},
+            {eSupportedVehciles.ElectricCar, typeof(ElectricCar)},
+            {eSupportedVehciles.FueledBike, typeof(FueledBike)},
+            {eSupportedVehciles.FueledCar, typeof(FueledCar)},
+            {eSupportedVehciles.Truck, typeof(Truck)},
+        };*/
+
+        public Dictionary<GarageManager.eSupportedVehciles, Type> m_SupportedTypesDictionary;
+
+
         public GarageManager()
         {
             m_GarageDictonary = new Dictionary<string, GarageClient>();
+            //m_SupportedTypesDictionary = SupportedTypesDictionary;
         }
 
         public bool ManageClient(string i_LicensePlate)
@@ -42,14 +55,16 @@ namespace Ex03.GarageLogic
             //the method returns a list of all parametrs of specific constructor as <paramName, paramType>
             //the ui will translate each name to a string for the user input
             List<MemberTranslator> memberList = new List<MemberTranslator>();
-            Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
-            var ctor = typeOfVehicle.GetType().GetConstructors()[0];
-            Vehicle vehicleInstance = ctor.Invoke(ctor.GetParameters()) as Vehicle;
-            foreach (var param in ctor.GetParameters())
+
+            Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
+            Vehicle v = typeOfVehicle.GetConstructors()[0].Invoke(null) as Vehicle;
+            
+            //Vehicle vehicleInstance = ctor.Invoke(ctor.GetParameters()) as Vehicle;
+            /*foreach (var param in v.GetParameters())
             {
-                MemberTranslator currentMember = new MemberTranslator(param.Name, param.ParameterType);
+                MemberTranslator currentMember = new MemberTranslator(param.Name, "fff", param.ParameterType);
                 memberList.Add(currentMember);
-            }
+            }*/
             return memberList;
         }
 

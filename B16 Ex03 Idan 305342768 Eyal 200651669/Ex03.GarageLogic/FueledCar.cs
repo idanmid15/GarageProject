@@ -5,7 +5,7 @@ namespace Ex03.GarageLogic
     public class FueledCar : Car
     {
         private const float k_MaxFueledEngine = 38f;
-    /*    List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
+        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
             new MemberTranslator("m_ModelType", "model type", typeof(string)),
             new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
@@ -15,6 +15,7 @@ namespace Ex03.GarageLogic
             new MemberTranslator("m_CarColor", "car color", typeof(eCarColor)),
             new MemberTranslator("m_NumOfDoors", "number of doors", typeof(eNumOfDoors)),
             new MemberTranslator("m_EnergyPrecentageLeft", "fuel amount left", typeof(float)),
+            new MemberTranslator("m_Wheels", "pressure of all wheels", typeof(float[]))
         };
 
         public FueledCar()
@@ -25,17 +26,17 @@ namespace Ex03.GarageLogic
         public override List<MemberTranslator> GetAllVehicleMembers()
         {
             return k_VehicleMembersList;
-        }*/
+        }
 
-        public FueledCar(
+        public void Construct(
             string i_ModelType,
             string i_LicensePlate,
             string i_WheelManufacturer,
-            float[] i_TirePressures,
             FueledEngine.eFuelType i_FuelType,
             float i_CurrentFuelAmount,
             eCarColor i_CarColor,
-            eNumOfDoors i_NumOfDoors)
+            eNumOfDoors i_NumOfDoors,
+            float[] i_TirePressures)
         {
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;

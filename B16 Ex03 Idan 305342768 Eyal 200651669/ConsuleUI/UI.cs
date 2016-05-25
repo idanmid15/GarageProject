@@ -47,8 +47,8 @@ namespace Ex03.ConsoleUI
 
         public UI()
         {
-            m_GarageManager = new GarageManager();
-            m_CurrentClient = null;
+            this.m_GarageManager = new GarageManager();
+            this.m_CurrentClient = null;
         }
 
         public void RunUI()
@@ -94,25 +94,27 @@ namespace Ex03.ConsoleUI
             {
                 try
                 {
-                    clientVehicle = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString);
+                    clientVehicle = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString, this.m_GarageManager);
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine(e.Message);
                     continue;
                 }
+                isValidVehicleOption = true;
             }
 
             Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
+
             string[] clientDetails = enterNewClientDetails();
             client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair);
             return client;
 
         }
 
-        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_VehicleType)
+        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle)
         {
-            List<object> vehicleMembersList = null;
+            List<MemberTranslator> vehicleMembersList = null;
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
             float[] tiresArray = null;
@@ -120,8 +122,12 @@ namespace Ex03.ConsoleUI
             int o_ResultTires = 0;
             string o_ResultMembers = string.Empty;
 
-            Type typeOfVehicle = Type.GetType(i_VehicleType.ToString());
-            var ctor = typeOfVehicle.GetType().GetConstructors()[0];
+            vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
+
+            return null;
+
+            //Type typeOfVehicle = Type.GetType(i_VehicleType.ToString());
+           /** var ctor = typeOfVehicle.GetType().GetConstructors()[0];
             foreach (var param in ctor.GetParameters())
             {
                 //filling the tires requires a different method to form a "tires array"
@@ -154,7 +160,7 @@ namespace Ex03.ConsoleUI
             //create a new vehicle instance with all relevant params for the specific car type given
             vehicleMembersArray = vehicleMembersList.ToArray();
             Vehicle vehicleInstance = ctor.Invoke(vehicleMembersArray) as Vehicle;
-            return vehicleInstance;
+            return vehicleInstance;*/
         }
 
         private void ExceptionParser(string i_Input, Type i_Type)
@@ -167,11 +173,8 @@ namespace Ex03.ConsoleUI
                 case "int":
                     UserInputExceptions.ParseIntegerInput(i_Input);
                     break;
-             /*   case "bool":
+                case "bool":
                     UserInputExceptions.ParseToxicInput(i_Input);
-                    break;
-                case "eLicenseType":
-                    UserInputExceptions.ParseLicenseTypeInput(i_Input);
                     break;
                 case "eCarColor":
                     UserInputExceptions.ParseCarColorInput(i_Input);
@@ -181,9 +184,8 @@ namespace Ex03.ConsoleUI
                     break;
                 case "FueledEngine.eFuelType":
                     UserInputExceptions.ParseFuelTypeInput(i_Input);
-                    break;*/
+                    break;
                 default:
-                    OutputToConsole("not a valid argument");
                     break;
 
             }
@@ -315,7 +317,7 @@ namespace Ex03.ConsoleUI
                 case UI.eUserOptions.RefuelVehicle:
                     if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
                         ///**********TODO:how to get fuel type************
-                        this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
+                        //this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:

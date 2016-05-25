@@ -19,7 +19,7 @@ namespace Ex03.GarageLogic
 
         protected string m_WheelManufacturer;
 
-        //public abstract List<MemberTranslator> GetAllVehicleMembers();
+        public abstract List<MemberTranslator> GetAllVehicleMembers();
 
         public string GetModelType()
         {
