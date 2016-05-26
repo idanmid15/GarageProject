@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
@@ -54,7 +55,7 @@ namespace Ex03.GarageLogic
         {
             Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
             MethodInfo constructMethod = typeOfVehicle.GetMethod("Construct");
-                this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;
+            this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;
             return this.m_CurrentVehicleConstruction;
         }
 
@@ -136,14 +137,24 @@ namespace Ex03.GarageLogic
 
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                foreach (PropertyInfo objectMember in client.GetType().GetProperties())
+                MemberInfo[] members = client.GetType().GetMembers();
+                foreach (var memberInfo in members)
                 {
-                    clientProperties.Append(string.Format("{0} : {1}{2}", objectMember.Name.Substring(2),
-                        objectMember.GetValue(client, null).ToString(), Environment.NewLine));
+                    if (memberInfo is FieldInfo)
+                    {
+                        //object memberValue = ((FieldInfo)memberInfo).GetValue(memberInfo);
+                        clientProperties.Append(string.Format("{0} : {1}{2}", memberInfo.Name,
+                            memberInfo.MemberType.ToString(), Environment.NewLine));
+                    }
                 }
-            }
 
+            }
             return clientProperties.ToString();
+        }
+
+        public void setGarageDictonary(string i_LicensePlate, GarageClient i_Client)
+        {
+            this.m_GarageDictonary.Add(i_LicensePlate, i_Client);
         }
     }
 }

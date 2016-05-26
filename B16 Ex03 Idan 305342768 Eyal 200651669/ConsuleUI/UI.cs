@@ -45,15 +45,15 @@ namespace Ex03.ConsoleUI
             if (this.m_GarageManager.ManageClient(licensePlate) == true)
             {
                 OutputToConsole("your car is'nt in our garage.");
+                //create a new client profile
                 this.m_CurrentClient = EnterNewClient();
-            }
-            else
-            {
-                OutputToConsole("what action would you like to do:");
-                userAction = InputFromConsole();
-                ChooseUserActions(userAction, licensePlate);
+                //enter the new client to our data structure
+                this.m_GarageManager.setGarageDictonary(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
             }
 
+            Console.Clear();
+            OutputToConsole("****Thank you! We've entered your details into our system****");
+            ChooseUserActions(licensePlate);
         }
 
         public GarageClient EnterNewClient()
@@ -227,10 +227,12 @@ namespace Ex03.ConsoleUI
             }
         }
 
-        public void ChooseUserActions(string i_UserOption, string i_LicensePlate)
+        public void ChooseUserActions(string i_LicensePlate)
         {
-            eUserOptions userOption = eUserOptions.InsertNewVehicle;
+            eUserOptions userOption = 0;
+            string currentLicensePlate = this.m_CurrentClient.m_Vehicle.GetLicensePlate();
             bool isValidAction = false;
+            string userActionInput = string.Empty;
             OutputToConsole(
 @"Choose the action you would like to make (by entering it's number):
 1. Insert a new vehicle
@@ -245,7 +247,8 @@ namespace Ex03.ConsoleUI
             {
                 try
                 {
-                    userOption = UserInputExceptions.ParseUserOptions(i_UserOption);
+                    userActionInput = InputFromConsole();
+                    userOption = UserInputExceptions.ParseUserOptions(userActionInput);
                     isValidAction = true;
                 }
                 catch (FormatException e)
@@ -285,7 +288,9 @@ namespace Ex03.ConsoleUI
                     }
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
-                    this.m_GarageManager.GetFullClientInfo(i_LicensePlate);
+                    Console.Clear();
+                    string outoutDetails = this.m_GarageManager.GetFullClientInfo(currentLicensePlate);
+                    OutputToConsole(outoutDetails);
                     break;
             }
 
