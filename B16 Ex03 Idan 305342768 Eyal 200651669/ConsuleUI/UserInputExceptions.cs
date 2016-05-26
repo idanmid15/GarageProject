@@ -70,7 +70,6 @@ namespace Ex03.ConsoleUI
         {
             GarageManager.eSupportedVehciles vehicleTypeInput = 0;
             GarageManager.eSupportedVehciles typeOfInput = 0;
-            //Type o_Result = null;
             try
             {
                 typeOfInput = (GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input));

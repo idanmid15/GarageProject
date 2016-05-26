@@ -7,7 +7,6 @@ namespace Ex03.GarageLogic
     public class ElectricBike : Bike
     {
         private const float k_MaxChargeTime = 1.9f;
-        public const int blabla = 2;
         List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
             new MemberTranslator("m_ModelType", "model type", typeof(string)),

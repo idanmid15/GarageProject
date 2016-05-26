@@ -39,6 +39,7 @@ namespace Ex03.GarageLogic
         {
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
+            this.m_WheelManufacturer = i_WheelManufacturer;
             for (int i = 0; i < k_NumOfWheels; i++)
             {
                 this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);
