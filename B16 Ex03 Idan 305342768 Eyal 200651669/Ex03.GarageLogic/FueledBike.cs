@@ -5,12 +5,12 @@ namespace Ex03.GarageLogic
     public class FueledBike : Bike
     {
         private const float k_MaxFueledEngine = 7.2f;
+        FueledEngine.eFuelType k_FuelType = FueledEngine.eFuelType.Octan95;
         List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
         {
             new MemberTranslator("m_ModelType", "model type", typeof(string)),
             new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
             new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new MemberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
             new MemberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
             new MemberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
             new MemberTranslator("m_EngineVolume", "engine volume", typeof(int)),
@@ -32,7 +32,6 @@ namespace Ex03.GarageLogic
             string i_ModelType,
             string i_LicensePlate,
             string i_WheelManufacturer,
-            FueledEngine.eFuelType i_FuelType,
             float i_CurrentFuelAmount,
             eLicenseType i_LicenseType,
             int i_EngineVolume,
@@ -45,7 +44,7 @@ namespace Ex03.GarageLogic
             {
                 this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);
             }
-            this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFueledEngine, FueledEngine.eFuelType.Octan95);
+            this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFueledEngine, k_FuelType);
             this.m_EnergyPrecentageLeft = i_CurrentFuelAmount / k_MaxFueledEngine;
             this.m_LicenseType = i_LicenseType;
             this.m_EngineVolume = i_EngineVolume;

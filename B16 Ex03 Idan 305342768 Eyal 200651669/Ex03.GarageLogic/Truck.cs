@@ -14,7 +14,6 @@ namespace Ex03.GarageLogic
             new MemberTranslator("m_ModelType", "model type", typeof(string)),
             new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
             new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new MemberTranslator("m_FuelType", "fuel type", typeof(FueledEngine.eFuelType)),
             new MemberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)),
             new MemberTranslator("m_IsCarryingToxic", "does the truck carring toxic metarials", typeof(bool)),
             new MemberTranslator("m_Wheels", "pressure of all wheels", typeof(float[]))
@@ -35,7 +34,6 @@ namespace Ex03.GarageLogic
          string i_ModelType,
          string i_LicensePlate,
          string i_WheelManufacturer,
-         FueledEngine.eFuelType i_FuelType,
          float i_CurrentFuelAmount,
          bool i_IsCarryingToxic,
          float[] i_TirePressures)
@@ -43,7 +41,8 @@ namespace Ex03.GarageLogic
             this.m_NumOfWheels = k_NumOfWheels;
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
-
+            this.m_WheelManufacturer = i_WheelManufacturer;
+            
             for (int i = 0; i < k_NumOfWheels; i++)
             {
                 this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);

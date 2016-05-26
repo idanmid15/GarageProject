@@ -30,9 +30,9 @@ namespace Ex03.GarageLogic
         public Vehicle Construct(
             string i_ModelType,
             string i_LicensePlate,
+            string i_WheelManufacturer,
             eCarColor i_CarColor,
             eNumOfDoors i_NumOfDoors,
-            string i_WheelManufacturer,
             float i_ChargeTimeLeft,
             float[] i_TirePressures)
         {

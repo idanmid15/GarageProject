@@ -7,18 +7,18 @@ namespace Ex03.GarageLogic
     {
         public enum eCarColor
         {
-            Yellow,
-            White,
-            Red,
-            Black
+            Yellow = 1,
+            White = 2,
+            Red = 3,
+            Black = 4
         }
 
         public enum eNumOfDoors
         {
-            Two,
-            Three,
-            Four,
-            Five,
+            Two = 2,
+            Three = 3,
+            Four = 4,
+            Five = 5,
         }
 
         protected const float k_MaxTirePressure = 31;

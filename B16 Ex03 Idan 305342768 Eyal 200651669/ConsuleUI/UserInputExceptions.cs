@@ -23,9 +23,6 @@ namespace Ex03.ConsoleUI
                 case "System.Boolean":
                     parsedMemberInput = UserInputExceptions.ParseToxicInput(i_Input);
                     break;
-                case "Ex03.GarageLogic.FueledEngine+eFuelType":
-                    parsedMemberInput = UserInputExceptions.ParseFuelTypeInput(i_Input);
-                    break;
                 case "Ex03.GarageLogic.Bike+eLicenseType":
                     parsedMemberInput = UserInputExceptions.ParseBikeLicenseType(i_Input);
                     break;
@@ -201,16 +198,13 @@ namespace Ex03.ConsoleUI
             return userOption;
         }
 
-        public static FueledEngine.eFuelType ParseFuelTypeInput(string i_Input)
+       /* public static FueledEngine.eFuelType ParseFuelTypeInput(string i_Input)
         {
             FueledEngine.eFuelType userOption = 0;
             switch ((FueledEngine.eFuelType)(Enum.Parse(typeof(FueledEngine.eFuelType), i_Input)))
             {
                 case FueledEngine.eFuelType.Octan95:
                     userOption = FueledEngine.eFuelType.Octan95;
-                    break;
-                case FueledEngine.eFuelType.Octan96:
-                    userOption = FueledEngine.eFuelType.Octan96;
                     break;
                 case FueledEngine.eFuelType.Octan98:
                     userOption = FueledEngine.eFuelType.Octan98;
@@ -222,7 +216,7 @@ namespace Ex03.ConsoleUI
                     throw new FormatException("Invalid input, must be 'Octan95', 'Octan96', Octan98' or 'Soler'");
             }
             return userOption;
-        }
+        }*/
 
         public static bool ParseToxicInput(string i_Input)
         {

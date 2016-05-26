@@ -54,14 +54,7 @@ namespace Ex03.GarageLogic
         {
             Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
             MethodInfo constructMethod = typeOfVehicle.GetMethod("Construct");
-            try
-            {
                 this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;
-            }
-            catch (Exception)
-            {
-                throw new Exception();
-            }
             return this.m_CurrentVehicleConstruction;
         }
 
