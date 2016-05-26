@@ -98,13 +98,13 @@ namespace Ex03.ConsoleUI
         private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle)
         {
             List<MemberTranslator> vehicleMembersList = null;
-            List<string> membersFromInputList = new List<string>();
+            List<object> membersFromInputList = new List<object>();
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
-            float[] tiresArray = null;
             string memberInput = string.Empty;
             int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
+            object ParsedMemberInput = null;
 
             vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
 
@@ -114,7 +114,7 @@ namespace Ex03.ConsoleUI
                 if (param.m_MemberName.Equals("m_Wheels")) {
                     if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
                     {
-                        tiresArray = enterNewTiresArray(o_NumOfTires);
+                        ParsedMemberInput = enterNewTiresArray(o_NumOfTires);
                         isMemberValid = true;
                     }
                 //for all the rest of the members
@@ -127,7 +127,8 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
+                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
+                        
                         isMemberValid = true;
                     }
                     catch (Exception e)
@@ -135,7 +136,7 @@ namespace Ex03.ConsoleUI
                         OutputToConsole(e.Message);
                     }
                 }
-                membersFromInputList.Add(memberInput);
+                membersFromInputList.Add(ParsedMemberInput);
 
             }
 

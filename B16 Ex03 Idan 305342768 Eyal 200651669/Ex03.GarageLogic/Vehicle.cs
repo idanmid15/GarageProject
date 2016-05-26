@@ -13,7 +13,7 @@ namespace Ex03.GarageLogic
 
         protected Engine m_Engine;
 
-        protected List<Wheel> m_Wheels;
+        protected Wheel[] m_Wheels;
 
         protected int m_NumOfWheels;
 
@@ -38,7 +38,7 @@ namespace Ex03.GarageLogic
             return m_EnergyPrecentageLeft;
         }
 
-        public List<Wheel> GetWheels()
+        public Wheel[] GetWheels()
         {
             return m_Wheels;
         }

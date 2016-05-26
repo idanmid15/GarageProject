@@ -50,13 +50,21 @@ namespace Ex03.GarageLogic
             return this.m_CurrentVehicleConstruction.GetAllVehicleMembers();
         }
 
-        public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, Object[] i_InputParameters)
+        public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, object[] i_InputParameters)
         {
             Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
             MethodInfo constructMethod = typeOfVehicle.GetMethod("Construct");
-            this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;     
+            try
+            {
+                this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
             return this.m_CurrentVehicleConstruction;
         }
+
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle)
         {
@@ -99,7 +107,7 @@ namespace Ex03.GarageLogic
         public void SetTirePressureToMax(string i_LicensePlate)
         {
             GarageClient client = null;
-            List<Wheel> allCarWheels = null;
+            Wheel[] allCarWheels = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 allCarWheels = client.m_Vehicle.GetWheels();

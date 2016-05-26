@@ -5,35 +5,40 @@ namespace Ex03.ConsoleUI
 {
     public class UserInputExceptions
     {
-        public static void ExceptionParser(string i_Input, Type i_Type)
+        public static object ExceptionParser(string i_Input, Type i_Type)
         {
+
+            object parsedMemberInput = null;
             switch (i_Type.ToString())
             {
+                case "System.String":
+                    parsedMemberInput = i_Input;
+                    break;
                 case "System.Single":
-                    UserInputExceptions.ParseFloatInput(i_Input);
+                    parsedMemberInput = UserInputExceptions.ParseFloatInput(i_Input);
                     break;
                 case "System.Int32":
-                    UserInputExceptions.ParseIntegerInput(i_Input);
+                    parsedMemberInput = UserInputExceptions.ParseIntegerInput(i_Input);
                     break;
                 case "System.Boolean":
-                    UserInputExceptions.ParseToxicInput(i_Input);
+                    parsedMemberInput = UserInputExceptions.ParseToxicInput(i_Input);
                     break;
-                case "eCarColor":
-                    UserInputExceptions.ParseCarColorInput(i_Input);
-                    break;
-                case "eNumOfDoors":
-                    UserInputExceptions.ParseNumOfDoorsInput(i_Input);
-                    break;
-                case "FueledEngine.eFuelType":
-                    UserInputExceptions.ParseFuelTypeInput(i_Input);
+                case "Ex03.GarageLogic.FueledEngine+eFuelType":
+                    parsedMemberInput = UserInputExceptions.ParseFuelTypeInput(i_Input);
                     break;
                 case "Ex03.GarageLogic.Bike+eLicenseType":
-                    UserInputExceptions.ParseBikeLicenseType(i_Input);
+                    parsedMemberInput = UserInputExceptions.ParseBikeLicenseType(i_Input);
+                    break;
+                case "Ex03.GarageLogic.Car+eNumOfDoors":
+                    parsedMemberInput = UserInputExceptions.ParseNumOfDoorsInput(i_Input);
+                    break;
+                case "Ex03.GarageLogic.Car+eCarColor":
+                    parsedMemberInput = UserInputExceptions.ParseCarColorInput(i_Input);
                     break;
                 default:
                     break;
-
             }
+            return parsedMemberInput;
         }
 
         public static float ParseFloatInput(string i_Input)
@@ -44,7 +49,7 @@ namespace Ex03.ConsoleUI
             isValid = float.TryParse(i_Input, out floatInput);
             if (!isValid)
             {
-                throw new FormatException("Invalid input, must be of integer type. Please try again");
+                throw new FormatException("Invalid input, must be of floating point type. Please try again");
             }
 
             return floatInput;
@@ -58,7 +63,7 @@ namespace Ex03.ConsoleUI
             isValid = int.TryParse(i_Input, out integerInput);
             if (!isValid)
             {
-                throw new FormatException("Invalid input, must be of floating point type. Please try again");
+                throw new FormatException("Invalid input, must be of integer type. Please try again");
             }
 
             return integerInput;

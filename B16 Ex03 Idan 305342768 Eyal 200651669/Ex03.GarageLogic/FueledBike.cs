@@ -20,6 +20,7 @@ namespace Ex03.GarageLogic
         public FueledBike()
         {
             this.m_NumOfWheels = k_NumOfWheels;
+            this.m_Wheels = new Wheel[k_NumOfWheels];
         }
 
         public override List<MemberTranslator> GetAllVehicleMembers()
@@ -27,7 +28,7 @@ namespace Ex03.GarageLogic
             return k_VehicleMembersList;
         }
 
-        public void Constructor(
+        public Vehicle Constructor(
             string i_ModelType,
             string i_LicensePlate,
             string i_WheelManufacturer,
@@ -40,12 +41,16 @@ namespace Ex03.GarageLogic
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
             this.m_WheelManufacturer = i_WheelManufacturer;
-            this.m_Wheels.Add(new Wheel(m_WheelManufacturer, i_TirePressures[0], k_MaxTirePressure));
-            this.m_Wheels.Add(new Wheel(m_WheelManufacturer, i_TirePressures[1], k_MaxTirePressure));
+            for (int i = 0; i < k_NumOfWheels; i++)
+            {
+                this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);
+            }
             this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFueledEngine, FueledEngine.eFuelType.Octan95);
             this.m_EnergyPrecentageLeft = i_CurrentFuelAmount / k_MaxFueledEngine;
             this.m_LicenseType = i_LicenseType;
             this.m_EngineVolume = i_EngineVolume;
+
+            return this;
         }
     }
 }
