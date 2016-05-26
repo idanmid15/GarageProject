@@ -17,29 +17,13 @@ namespace Ex03.ConsoleUI
             DisplayCarInfo = 7
         }
 
-        public Dictionary<string, int> NumOfWheelsPerVehicle = new Dictionary<string, int>
+        public Dictionary<GarageManager.eSupportedVehciles, int> NumOfWheelsPerVehicle = new Dictionary<GarageManager.eSupportedVehciles, int>
         {
-            {"ElectricBike", 2},
-            {"ElectricCar", 4},
-            {"FueledBike", 2},
-            {"FueledCar", 4},
-            {"Truck", 16}
-        };
-
-        public Dictionary<string, string> membersTranslationDictionary = new Dictionary<string, string>()
-        {
-            {"i_ModelType", "model type"},
-            {"i_LicensePlate", "license plate"},
-            {"i_WheelManufacturer", "wheels Manufacturer"},
-            {"i_FuelType", "fuel type"},
-            {"i_CurrentFuelAmount", "current fuel amount"},
-            {"i_LicenseType", "license type"},
-            {"i_EngineVolume", "engine volume"},
-            {"i_ChargeTimeLeft", "charge time left"},
-            {"i_IsCarryingToxic", "does the truck carring toxic metarials"},
-            {"i_CarColor", "car color"},
-            {"i_NumOfDoors", "number of doors"},
-            {"i_TirePressures" , "pressure for each wheel"}
+            {GarageManager.eSupportedVehciles.ElectricBike, 2},
+            {GarageManager.eSupportedVehciles.ElectricCar, 4},
+            {GarageManager.eSupportedVehciles.FueledBike, 2},
+            {GarageManager.eSupportedVehciles.FueledCar, 4},
+            {GarageManager.eSupportedVehciles.Truck, 16}
         };
 
         GarageManager m_GarageManager;
@@ -89,19 +73,18 @@ namespace Ex03.ConsoleUI
 3. Fueled Bike
 4. Fueled Car
 5. Truck");
-            clientVehicleOptionString = InputFromConsole();
             while (!isValidVehicleOption)
             {
                 try
                 {
+                    clientVehicleOptionString = InputFromConsole();
                     clientVehicle = UserInputExceptions.ParseVehicleTypeInput(clientVehicleOptionString, this.m_GarageManager);
+                    isValidVehicleOption = true;
                 }
                 catch (FormatException e)
                 {
                     Console.WriteLine(e.Message);
-                    continue;
                 }
-                isValidVehicleOption = true;
             }
 
             Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
@@ -120,6 +103,7 @@ namespace Ex03.ConsoleUI
             bool isMemberValid = false;
             float[] tiresArray = null;
             string memberInput = string.Empty;
+            int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
 
             vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
@@ -127,11 +111,12 @@ namespace Ex03.ConsoleUI
             foreach (MemberTranslator param in vehicleMembersList)
             {
                 //filling the tires requires a different method to form a "tires array"
-                if (param.m_MemberName.Equals("m_TirePressures")) {
-                   // if (NumOfWheelsPerVehicle.TryGetValue(i_VehicleType.ToString(), out o_ResultTires)){
-                   tiresArray = enterNewTiresArray(2);
+                if (param.m_MemberName.Equals("m_Wheels")) {
+                    if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
+                    {
+                        tiresArray = enterNewTiresArray(o_NumOfTires);
                         isMemberValid = true;
-                    //}
+                    }
                 //for all the rest of the members
                 } else {
                     OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));      
@@ -142,7 +127,8 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        ExceptionParser(memberInput, param.m_MemberType);
+                        UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
+                        isMemberValid = true;
                     }
                     catch (Exception e)
                     {
@@ -159,34 +145,6 @@ namespace Ex03.ConsoleUI
             return vehicleInstance;
         }
 
-        private void ExceptionParser(string i_Input, Type i_Type)
-        {
-            switch (i_Type.ToString())
-            {
-                case "float":
-                    UserInputExceptions.ParseFloatInput(i_Input);
-                    break;
-                case "int":
-                    UserInputExceptions.ParseIntegerInput(i_Input);
-                    break;
-                case "bool":
-                    UserInputExceptions.ParseToxicInput(i_Input);
-                    break;
-                case "eCarColor":
-                    UserInputExceptions.ParseCarColorInput(i_Input);
-                    break;
-                case "eNumOfDoors":
-                    UserInputExceptions.ParseNumOfDoorsInput(i_Input);
-                    break;
-                case "FueledEngine.eFuelType":
-                    UserInputExceptions.ParseFuelTypeInput(i_Input);
-                    break;
-                default:
-                    break;
-
-            }
-        }
-
         private float[] enterNewTiresArray(int i_NumOfWheels)
         {
             float[] tiresArray = new float[i_NumOfWheels];
@@ -197,6 +155,7 @@ namespace Ex03.ConsoleUI
             for (int i = 0; i < tiresArray.Length; i++)
             {
                 OutputToConsole(string.Format("enter pressure of tire No. {0}:", i));
+                isValid = false;
                 while (!isValid)
                 {
                     memberInput = InputFromConsole();

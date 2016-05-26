@@ -5,6 +5,37 @@ namespace Ex03.ConsoleUI
 {
     public class UserInputExceptions
     {
+        public static void ExceptionParser(string i_Input, Type i_Type)
+        {
+            switch (i_Type.ToString())
+            {
+                case "System.Single":
+                    UserInputExceptions.ParseFloatInput(i_Input);
+                    break;
+                case "System.Int32":
+                    UserInputExceptions.ParseIntegerInput(i_Input);
+                    break;
+                case "System.Boolean":
+                    UserInputExceptions.ParseToxicInput(i_Input);
+                    break;
+                case "eCarColor":
+                    UserInputExceptions.ParseCarColorInput(i_Input);
+                    break;
+                case "eNumOfDoors":
+                    UserInputExceptions.ParseNumOfDoorsInput(i_Input);
+                    break;
+                case "FueledEngine.eFuelType":
+                    UserInputExceptions.ParseFuelTypeInput(i_Input);
+                    break;
+                case "Ex03.GarageLogic.Bike+eLicenseType":
+                    UserInputExceptions.ParseBikeLicenseType(i_Input);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
         public static float ParseFloatInput(string i_Input)
         {
             float floatInput;
@@ -13,7 +44,7 @@ namespace Ex03.ConsoleUI
             isValid = float.TryParse(i_Input, out floatInput);
             if (!isValid)
             {
-                throw new FormatException("Invalid input, must be of floating point type. Please try again");
+                throw new FormatException("Invalid input, must be of integer type. Please try again");
             }
 
             return floatInput;
@@ -36,47 +67,36 @@ namespace Ex03.ConsoleUI
         public static GarageManager.eSupportedVehciles ParseVehicleTypeInput(string i_Input, GarageManager i_GarageManager)
         {
             GarageManager.eSupportedVehciles vehicleTypeInput = 0;
+            GarageManager.eSupportedVehciles typeOfInput = 0;
             //Type o_Result = null;
-            GarageManager.eSupportedVehciles typeOfInput = (GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input));
+            try
+            {
+                typeOfInput = (GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input));
+            }
+            catch
+            {
+                throw new FormatException("Invalid input, must be a valid vehicle");
+            }
+
             switch (typeOfInput)
             {
                 case GarageManager.eSupportedVehciles.ElectricBike:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricBike;
-                   /* if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
-                    {
-                        vehicleTypeInput = o_Result;
-                    }*/
                     break;
                 case GarageManager.eSupportedVehciles.ElectricCar:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.ElectricCar;
-                    /*if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
-                    {
-                        vehicleTypeInput = o_Result;
-                    }*/
                     break;
                 case GarageManager.eSupportedVehciles.FueledBike:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.FueledBike;
-                    /*if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
-                    {
-                        vehicleTypeInput = o_Result;
-                    }*/
                     break;
                 case GarageManager.eSupportedVehciles.FueledCar:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.FueledCar;
-                    /*if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
-                    {
-                        vehicleTypeInput = o_Result;
-                    }*/
                     break;
                 case GarageManager.eSupportedVehciles.Truck:
                     vehicleTypeInput = GarageManager.eSupportedVehciles.Truck;
-                    /*if (i_GarageManager.SupportedTypesDictionary.TryGetValue(typeOfInput, out o_Result))
-                    {
-                        vehicleTypeInput = o_Result;
-                    }*/
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be a valid vehicle");
+                    throw new FormatException("Invalid input, you must enter a number (1-5) represting a supported vehicle");
             }
             return vehicleTypeInput;
         }
@@ -108,7 +128,7 @@ namespace Ex03.ConsoleUI
                     userOption = UI.eUserOptions.DisplayCarInfo;
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be 1-7");
+                    throw new FormatException("Invalid input, you must enter a number (1-7) represting an action in our garage");
             }
             return userOption;
         }
@@ -125,7 +145,7 @@ namespace Ex03.ConsoleUI
                     userOption = GarageClient.eVehicleStatus.NotInRepair;
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be 1 or 2");
+                    throw new FormatException("Invalid input, must be 'InRepair' or 'NotInRepair'");
             }
             return userOption;
         }
@@ -148,7 +168,7 @@ namespace Ex03.ConsoleUI
                     userOption = Car.eCarColor.Yellow;
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be 1,2,3 or 4");
+                    throw new FormatException("Invalid input, must be 'Black', 'Red', 'White' or 'Yellow'");
             }
             return userOption;
         }
@@ -171,7 +191,7 @@ namespace Ex03.ConsoleUI
                     userOption = Car.eNumOfDoors.Five;
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be 2,3,4 or 5");
+                    throw new FormatException("Invalid input, must be 'Two', 'Three', 'Four' or 'Five'");
             }
             return userOption;
         }
@@ -194,7 +214,7 @@ namespace Ex03.ConsoleUI
                     userOption = FueledEngine.eFuelType.Soler;
                     break;
                 default:
-                    throw new FormatException("Invalid input, must be 1,2,3 or 4");
+                    throw new FormatException("Invalid input, must be 'Octan95', 'Octan96', Octan98' or 'Soler'");
             }
             return userOption;
         }
@@ -212,6 +232,30 @@ namespace Ex03.ConsoleUI
                     break;
                 default:
                     throw new FormatException("Invalid input, must be 'yes' or 'no'");
+            }
+            return userOption;
+        }
+
+
+        public static Bike.eLicenseType ParseBikeLicenseType(string i_Input)
+        {
+            Bike.eLicenseType userOption = 0;
+            switch ((Bike.eLicenseType)(Enum.Parse(typeof(Bike.eLicenseType), i_Input)))
+            {
+                case Bike.eLicenseType.A:
+                    userOption = Bike.eLicenseType.A;
+                    break;
+                case Bike.eLicenseType.A1:
+                    userOption = Bike.eLicenseType.A1;
+                    break;
+                case Bike.eLicenseType.AB:
+                    userOption = Bike.eLicenseType.AB;
+                    break;
+                case Bike.eLicenseType.B1:
+                    userOption = Bike.eLicenseType.B1;
+                    break;
+                default:
+                    throw new FormatException("Invalid input, valid licenses are: 'A', 'A1', 'AB' or 'B1'");
             }
             return userOption;
         }

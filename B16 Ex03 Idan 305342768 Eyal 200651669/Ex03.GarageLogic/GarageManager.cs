@@ -17,23 +17,12 @@ namespace Ex03.GarageLogic
         }
 
         public Dictionary<string, GarageClient> m_GarageDictonary;
-
-      /*  public Dictionary<GarageManager.eSupportedVehciles, Type> SupportedTypesDictionary = new Dictionary<GarageManager.eSupportedVehciles, Type>()
-        {
-            {eSupportedVehciles.ElectricBike, typeof(ElectricBike)},
-            {eSupportedVehciles.ElectricCar, typeof(ElectricCar)},
-            {eSupportedVehciles.FueledBike, typeof(FueledBike)},
-            {eSupportedVehciles.FueledCar, typeof(FueledCar)},
-            {eSupportedVehciles.Truck, typeof(Truck)},
-        };*/
-
-        public Dictionary<GarageManager.eSupportedVehciles, Type> m_SupportedTypesDictionary;
-
+        public Vehicle m_CurrentVehicleConstruction;
 
         public GarageManager()
         {
             m_GarageDictonary = new Dictionary<string, GarageClient>();
-            //m_SupportedTypesDictionary = SupportedTypesDictionary;
+            m_CurrentVehicleConstruction = null;
         }
 
         public bool ManageClient(string i_LicensePlate)
@@ -49,7 +38,7 @@ namespace Ex03.GarageLogic
 
             return isNewClient;
         }
-        
+
         public List<MemberTranslator> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
             //the method returns a list of all parametrs of specific constructor as <paramName, paramType>
@@ -57,22 +46,17 @@ namespace Ex03.GarageLogic
             List<MemberTranslator> memberList = new List<MemberTranslator>();
 
             Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
-            Vehicle v = typeOfVehicle.GetConstructors()[0].Invoke(null) as Vehicle;
-            
-            //Vehicle vehicleInstance = ctor.Invoke(ctor.GetParameters()) as Vehicle;
-            /*foreach (var param in v.GetParameters())
-            {
-                MemberTranslator currentMember = new MemberTranslator(param.Name, "fff", param.ParameterType);
-                memberList.Add(currentMember);
-            }*/
-            return v.GetAllVehicleMembers();
+            this.m_CurrentVehicleConstruction = typeOfVehicle.GetConstructors()[0].Invoke(null) as Vehicle;
+            return this.m_CurrentVehicleConstruction.GetAllVehicleMembers();
         }
 
         public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, Object[] i_InputParameters)
         {
-            Type typeOfVehicle = Type.GetType(i_SupportedVehicle.ToString());
-            return Activator.CreateInstance(typeOfVehicle, i_InputParameters) as Vehicle;
-        } 
+            Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
+            MethodInfo constructMethod = typeOfVehicle.GetMethod("Construct");
+            this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;     
+            return this.m_CurrentVehicleConstruction;
+        }
 
         public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle)
         {
@@ -148,12 +132,12 @@ namespace Ex03.GarageLogic
         {
             StringBuilder clientProperties = new StringBuilder();
             GarageClient client = null;
-            
+
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 foreach (PropertyInfo objectMember in client.GetType().GetProperties())
                 {
-                    clientProperties.Append(string.Format("{0} : {1}{2}", objectMember.Name.Substring(2), 
+                    clientProperties.Append(string.Format("{0} : {1}{2}", objectMember.Name.Substring(2),
                         objectMember.GetValue(client, null).ToString(), Environment.NewLine));
                 }
             }
