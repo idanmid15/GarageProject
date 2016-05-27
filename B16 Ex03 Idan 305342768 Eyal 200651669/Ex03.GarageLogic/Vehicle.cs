@@ -21,8 +21,6 @@ namespace Ex03.GarageLogic
 
         public abstract List<MemberTranslator> GetAllVehicleMembers();
 
-        //public abstract void Construct();
-
         public string GetModelType()
         {
             return m_ModelType;

@@ -53,5 +53,10 @@ namespace Ex03.GarageLogic
 
             return this;
         }
+
+        public float getMaxTimeToCharge()
+        {
+            return k_MaxChargeTime;
+        }
     }
 }

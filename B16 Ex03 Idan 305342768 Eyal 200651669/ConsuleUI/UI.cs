@@ -110,15 +110,18 @@ namespace Ex03.ConsoleUI
             foreach (MemberTranslator param in vehicleMembersList)
             {
                 //filling the tires requires a different method to form a "tires array"
-                if (param.m_MemberName.Equals("m_Wheels")) {
+                if (param.m_MemberName.Equals("m_Wheels"))
+                {
                     if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
                     {
                         ParsedMemberInput = enterNewTiresArray(o_NumOfTires);
                         isMemberValid = true;
                     }
-                //for all the rest of the members
-                } else {
-                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));      
+                    //for all the rest of the members
+                }
+                else
+                {
+                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
                     isMemberValid = false;
                 }
                 while (!isMemberValid)
@@ -126,7 +129,7 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);       
+                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
                         isMemberValid = true;
                     }
                     catch (Exception e)
@@ -162,7 +165,8 @@ namespace Ex03.ConsoleUI
                     {
                         tiresArray[i] = o_Tire;
                         isValid = true;
-                    }else
+                    }
+                    else
                     {
                         OutputToConsole("wheel pressure must be a positive float number");
                     }
@@ -199,7 +203,7 @@ namespace Ex03.ConsoleUI
 
         public void DisplayFilteredGarageVehicles()
         {
-             OutputToConsole(string.Format(
+            OutputToConsole(string.Format(
 @"what is the new status of the vehicle?
 enter 1 (or 'InRepair') for vehicle in repair status
 enter 2 (or 'NotInRepair') for vehicle not in repair status
@@ -250,6 +254,62 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             }
         }
 
+        public void reChargeVehcile()
+        {
+            bool isValidInput = false;
+            string licesnsePlateInput = string.Empty;
+            float chargeTimeInput = 0;
+
+            OutputToConsole("Enter license plate number:");
+            licesnsePlateInput = InputFromConsole();
+            OutputToConsole("Enter the how much time you wish to charge:");
+            while (!isValidInput)
+            {
+                try
+                {
+                    chargeTimeInput = UserInputExceptions.ParseFloatInput(InputFromConsole());
+                    isValidInput = true;
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+            }
+
+            try
+            {
+                float chargeElectricVehicle = TryChargeElctricVehicle(licesnsePlateInput, chargeTimeInput);
+                this.m_GarageManager.ChargeVehicle(licesnsePlateInput, chargeTimeInput);
+                OutputToConsole(string.Format("vehicle {0} has been charged with {1} hours", licesnsePlateInput, chargeTimeInput));
+            }
+            catch (Exception e)
+            {
+                OutputToConsole(e.Message);
+            }
+        }
+
+        public float TryChargeElctricVehicle(string i_LicensePlate, float i_ChargeTime)
+        {
+            GarageClient client = null;
+            if (!this.m_GarageManager.m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
+            {
+                throw new Exception("license plate was not found in the garage");
+            }
+            else if (client.m_Vehicle.m_Engine.GetEngineType() != Engine.eEngineType.Electric)
+            {
+                throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
+            }
+            else if (i_ChargeTime > client.m_Vehicle.m_Engine.getMaxPowerAmount())
+            {
+                throw new Exception("charge time requested is greater than the max charge time possible");
+            }
+            else
+            {
+                return i_ChargeTime;
+            }
+        }
+
         public void ChooseUserActions(string i_LicensePlate)
         {
             eUserOptions userOption = 0;
@@ -281,6 +341,7 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                 }
             }
 
+            OutputClearConsole();
             switch (userOption)
             {
                 case UI.eUserOptions.InsertNewVehicle:
@@ -297,22 +358,16 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                     this.m_GarageManager.SetTirePressureToMax(currentLicensePlate);
                     break;
                 case UI.eUserOptions.RefuelVehicle:
-                    if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
+                    if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel))
+                    {
                         ///**********TODO:how to get fuel type************
                         //this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
-                    OutputToConsole("enter amount of time to charge vehicle:");
-                    float o_TimeToCharge;
-                    bool isValidChargeTime = float.TryParse(InputFromConsole(), out o_TimeToCharge);
-                    if (isValidChargeTime)
-                    {
-                        this.m_GarageManager.ChargeVehicle(currentLicensePlate , o_TimeToCharge);
-                    }
+                    reChargeVehcile();
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
-                    OutputClearConsole();
                     string outoutDetails = this.m_GarageManager.GetFullClientInfo(currentLicensePlate);
                     OutputToConsole(outoutDetails);
                     break;

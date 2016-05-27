@@ -34,5 +34,10 @@
         {
             return m_EngineType;
         }
+
+        public float getMaxPowerAmount()
+        {
+            return r_MaxPowerAmount;
+        }
     }
 }
