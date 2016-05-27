@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
@@ -68,25 +67,31 @@ namespace Ex03.GarageLogic
             return newClient;
         }
 
-        public List<string> DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status = GarageClient.eVehicleStatus.None)
+        public string DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status)
         {
             string clientLicensePlate = string.Empty;
-            List<string> filteredLicensePlates = new List<string>();
-            //run over each vehicle, and add to a list the filtered ones.
+            StringBuilder clientPropertiesString = new StringBuilder();
+            int index = 1;
+            //run over each vehicle, and add to a string builder only the filtered ones.
             foreach (KeyValuePair<string, GarageClient> vehicleEntry in this.m_GarageDictonary)
             {
                 clientLicensePlate = vehicleEntry.Value.m_Vehicle.GetLicensePlate();
                 if (i_Status == GarageClient.eVehicleStatus.None)
                 {
-                    filteredLicensePlates.Add(clientLicensePlate);
+                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}",index, clientLicensePlate, Environment.NewLine));
                 }
                 else if (vehicleEntry.Value.m_Status == i_Status)
                 {
-                    filteredLicensePlates.Add(clientLicensePlate);
+                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
                 }
+                index++;
             }
 
-            return filteredLicensePlates;
+            if (clientPropertiesString.Length == 0)
+            {
+                clientPropertiesString.Append("sorry, no matching vehicles were found.");
+            }
+            return clientPropertiesString.ToString();
         }
 
         public void UpdateCarStatus(string i_LicensePlate, GarageClient.eVehicleStatus i_NewSatus)
@@ -147,9 +152,8 @@ namespace Ex03.GarageLogic
                             memberInfo.MemberType.ToString(), Environment.NewLine));
                     }
                 }
-
             }
-            return clientProperties.ToString();
+                    return clientProperties.ToString(); ;
         }
 
         public void setGarageDictonary(string i_LicensePlate, GarageClient i_Client)

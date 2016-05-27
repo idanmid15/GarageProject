@@ -187,15 +187,21 @@ namespace Ex03.ConsoleUI
 
         public void DisplayFilteredGarageVehicles()
         {
-            OutputToConsole(string.Format("would you like to filter the type of cars to display?{0}Type 1- for in repair staus{0}Type 2 - for not in repair", System.Environment.NewLine));
+             OutputToConsole(string.Format(
+@"what is the new status of the vehicle?
+enter 1 (or 'InRepair') for vehicle in repair status
+enter 2 (or 'NotInRepair') for vehicle not in repair status
+enter 3 (or 'None') for no filter on the results"));
             bool isValidFilter = false;
             GarageClient.eVehicleStatus vehicleDisplayFilter;
+            string displayFilterString = string.Empty;
             while (!isValidFilter)
             {
                 try
                 {
                     vehicleDisplayFilter = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
-                    this.m_GarageManager.DisplayVehcilesInGarage(vehicleDisplayFilter);
+                    displayFilterString = this.m_GarageManager.DisplayVehcilesInGarage(vehicleDisplayFilter);
+                    isValidFilter = true;
                 }
                 catch (FormatException e)
                 {
@@ -203,7 +209,7 @@ namespace Ex03.ConsoleUI
                     continue;
                 }
             }
-
+            OutputToConsole(displayFilterString);
         }
 
         public void updateVehicleStatus(string i_LicensePlate)
@@ -214,7 +220,7 @@ namespace Ex03.ConsoleUI
             {
                 try
                 {
-                    OutputToConsole(string.Format("what is the new status of the vehicle?{0}Type 1- for in repair staus{0}Type 2 - for not in repair", System.Environment.NewLine));
+                    OutputToConsole(string.Format("what is the new status of the vehicle?{0}Type 1 - for in repair status{0}Type 2 - for not in repair", Environment.NewLine));
                     newStatus = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
                     this.m_GarageManager.DisplayVehcilesInGarage(newStatus);
                 }

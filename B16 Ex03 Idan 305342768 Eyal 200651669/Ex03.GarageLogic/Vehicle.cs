@@ -5,19 +5,19 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        protected string m_ModelType;
+        public string m_ModelType;
 
-        protected string m_LicensePlate;
+        public string m_LicensePlate;
 
-        protected float m_EnergyPrecentageLeft;
+        public float m_EnergyPrecentageLeft;
 
-        protected Engine m_Engine;
+        public Engine m_Engine;
 
-        protected Wheel[] m_Wheels;
+        public Wheel[] m_Wheels;
 
-        protected int m_NumOfWheels;
+        public int m_NumOfWheels;
 
-        protected string m_WheelManufacturer;
+        public string m_WheelManufacturer;
 
         public abstract List<MemberTranslator> GetAllVehicleMembers();
 

@@ -145,8 +145,11 @@ namespace Ex03.ConsoleUI
                 case GarageClient.eVehicleStatus.NotInRepair:
                     userOption = GarageClient.eVehicleStatus.NotInRepair;
                     break;
+                case GarageClient.eVehicleStatus.None:
+                    userOption = GarageClient.eVehicleStatus.None;
+                    break;
                 default:
-                    throw new FormatException("Invalid input, must be 'InRepair' or 'NotInRepair'");
+                    throw new FormatException("Invalid input, must be 1 (or 'InRepair'), 2 (or 'NotInRepair') or 3 (or 'None') for no filter");
             }
             return userOption;
         }
