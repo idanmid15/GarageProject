@@ -126,8 +126,7 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
-                        
+                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);       
                         isMemberValid = true;
                     }
                     catch (Exception e)
@@ -179,7 +178,20 @@ namespace Ex03.ConsoleUI
             OutputToConsole("enter your name:");
             clientDetails[0] = InputFromConsole();
             OutputToConsole("enter your phone number:");
-            clientDetails[1] = InputFromConsole();
+            bool isValidPhoneNumber = false;
+
+            while (!isValidPhoneNumber)
+            {
+                try
+                {
+                    clientDetails[1] = UserInputExceptions.ParsePhoneNumber(InputFromConsole());
+                    isValidPhoneNumber = true;
+                }
+                catch (Exception e)
+                {
+                    OutputToConsole(e.Message);
+                }
+            }
 
             return clientDetails;
         }
@@ -199,7 +211,7 @@ enter 3 (or 'None') for no filter on the results"));
             {
                 try
                 {
-                    vehicleDisplayFilter = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
+                    vehicleDisplayFilter = UserInputExceptions.ParseVehicleDisplayFilter(InputFromConsole());
                     displayFilterString = this.m_GarageManager.DisplayVehcilesInGarage(vehicleDisplayFilter);
                     isValidFilter = true;
                 }
@@ -216,13 +228,17 @@ enter 3 (or 'None') for no filter on the results"));
         {
             bool isValidFilter = false;
             GarageClient.eVehicleStatus newStatus;
+
             while (!isValidFilter)
             {
                 try
                 {
-                    OutputToConsole(string.Format("what is the new status of the vehicle?{0}Type 1 - for in repair status{0}Type 2 - for not in repair", Environment.NewLine));
-                    newStatus = UserInputExceptions.ParsevehicleDisplayFilter(InputFromConsole());
-                    this.m_GarageManager.DisplayVehcilesInGarage(newStatus);
+                    OutputToConsole(string.Format(
+@"what is the new status of the vehicle?
+enter 1 (or 'InRepair') - for in repair status
+enter 2 (or 'NotInRepair') - for not in repair status"));
+                    newStatus = UserInputExceptions.ParseVehcileStatusChange(InputFromConsole());
+                    isValidFilter = true;
                 }
                 catch (FormatException e)
                 {
@@ -230,6 +246,7 @@ enter 3 (or 'None') for no filter on the results"));
                     continue;
                 }
                 this.m_GarageManager.UpdateCarStatus(i_LicensePlate, newStatus);
+                OutputToConsole(string.Format("License plate No. {0} changed status to {1}", i_LicensePlate, newStatus.ToString()));
             }
         }
 
@@ -273,10 +290,11 @@ enter 3 (or 'None') for no filter on the results"));
                     DisplayFilteredGarageVehicles();
                     break;
                 case UI.eUserOptions.ChangeVehicleStatus:
-                    updateVehicleStatus(i_LicensePlate);
+                    OutputClearConsole();
+                    updateVehicleStatus(currentLicensePlate);
                     break;
                 case UI.eUserOptions.InflateTires:
-                    this.m_GarageManager.SetTirePressureToMax(i_LicensePlate);
+                    this.m_GarageManager.SetTirePressureToMax(currentLicensePlate);
                     break;
                 case UI.eUserOptions.RefuelVehicle:
                     if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel)){
@@ -285,16 +303,16 @@ enter 3 (or 'None') for no filter on the results"));
                     }
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
-                    OutputToConsole("enter amout of time to charge vehicle:");
+                    OutputToConsole("enter amount of time to charge vehicle:");
                     float o_TimeToCharge;
                     bool isValidChargeTime = float.TryParse(InputFromConsole(), out o_TimeToCharge);
                     if (isValidChargeTime)
                     {
-                        this.m_GarageManager.ChargeVehicle(i_LicensePlate , o_TimeToCharge);
+                        this.m_GarageManager.ChargeVehicle(currentLicensePlate , o_TimeToCharge);
                     }
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
-                    Console.Clear();
+                    OutputClearConsole();
                     string outoutDetails = this.m_GarageManager.GetFullClientInfo(currentLicensePlate);
                     OutputToConsole(outoutDetails);
                     break;
@@ -310,6 +328,11 @@ enter 3 (or 'None') for no filter on the results"));
         public static string InputFromConsole()
         {
             return Console.ReadLine();
+        }
+
+        public static void OutputClearConsole()
+        {
+            Console.Clear();
         }
     }
 }

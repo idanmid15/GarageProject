@@ -100,6 +100,9 @@ namespace Ex03.GarageLogic
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 client.m_Status = i_NewSatus;
+            } else
+            {
+                throw new Exception("License plate number not found in the garage");
             }
         }
 
