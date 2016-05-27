@@ -6,7 +6,8 @@
         {
             Octan95,
             Octan98,
-            Soler
+            Soler,
+            None
         }
 
         protected eFuelType m_FuelType;
@@ -21,5 +22,9 @@
             m_FuelType = i_FuelType;
         }
 
+        public eFuelType GetFuelType()
+        {
+            return this.m_FuelType;
+        }
     }
 }

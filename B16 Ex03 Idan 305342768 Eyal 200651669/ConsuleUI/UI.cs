@@ -254,20 +254,29 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             }
         }
 
-        public void reChargeVehcile()
+        public void RePowreVehcile(Boolean isFuelEngine)
         {
             bool isValidInput = false;
             string licesnsePlateInput = string.Empty;
-            float chargeTimeInput = 0;
+            float repowerAmountInput = 0;
+            string fuelTypeInput = string.Empty;
 
             OutputToConsole("Enter license plate number:");
             licesnsePlateInput = InputFromConsole();
-            OutputToConsole("Enter the how much time you wish to charge:");
+            if (isFuelEngine)
+            {
+                OutputToConsole("Enter the amount you wish to fuel:");
+            }
+            else
+                OutputToConsole("Enter the how much time you wish to charge:");
+            {
+            }
+
             while (!isValidInput)
             {
                 try
                 {
-                    chargeTimeInput = UserInputExceptions.ParseFloatInput(InputFromConsole());
+                    repowerAmountInput = UserInputExceptions.ParseFloatInput(InputFromConsole());
                     isValidInput = true;
                 }
                 catch (FormatException e)
@@ -277,11 +286,28 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                 }
             }
 
+            //now try to parse the input regarding rePower the vehicle
             try
             {
-                float chargeElectricVehicle = TryChargeElctricVehicle(licesnsePlateInput, chargeTimeInput);
-                this.m_GarageManager.ChargeVehicle(licesnsePlateInput, chargeTimeInput);
-                OutputToConsole(string.Format("vehicle {0} has been charged with {1} hours", licesnsePlateInput, chargeTimeInput));
+                //repower the vehicle
+                if (isFuelEngine)
+                {
+
+                    OutputToConsole(string.Format(
+@"Enter Fuel type:
+Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
+                    fuelTypeInput = InputFromConsole();
+                    FueledEngine.eFuelType parsedFuelType = UserInputExceptions.ParseFuelTypeInput(fuelTypeInput);
+                    CheckIfRepowerArgsExceptions(licesnsePlateInput, repowerAmountInput, isFuelEngine, parsedFuelType);
+                    this.m_GarageManager.FuelVehcile(licesnsePlateInput, parsedFuelType, repowerAmountInput);
+                    OutputToConsole(string.Format("vehicle {0} has been fueled with {1} liters", licesnsePlateInput, repowerAmountInput));
+                }
+                else
+                {
+                    CheckIfRepowerArgsExceptions(licesnsePlateInput, repowerAmountInput, isFuelEngine);
+                    this.m_GarageManager.ChargeVehicle(licesnsePlateInput, repowerAmountInput);
+                    OutputToConsole(string.Format("vehicle {0} has been charged with {1} hours", licesnsePlateInput, repowerAmountInput));
+                }
             }
             catch (Exception e)
             {
@@ -289,24 +315,34 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             }
         }
 
-        public float TryChargeElctricVehicle(string i_LicensePlate, float i_ChargeTime)
+        public void CheckIfRepowerArgsExceptions(string i_LicensePlate, float i_RepowerAmount, Boolean i_IsFuelEngine, FueledEngine.eFuelType i_FuelType = FueledEngine.eFuelType.None)
         {
             GarageClient client = null;
             if (!this.m_GarageManager.m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 throw new Exception("license plate was not found in the garage");
             }
-            else if (client.m_Vehicle.m_Engine.GetEngineType() != Engine.eEngineType.Electric)
+            else if (client.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
             {
                 throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
             }
-            else if (i_ChargeTime > client.m_Vehicle.m_Engine.getMaxPowerAmount())
+            else if (client.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
             {
-                throw new Exception("charge time requested is greater than the max charge time possible");
+                throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
             }
-            else
+            else if (i_RepowerAmount > client.m_Vehicle.m_Engine.getMaxPowerAmount())
             {
-                return i_ChargeTime;
+                if (i_IsFuelEngine)
+                {
+                    throw new Exception("Fuel amount requested is greater than the fuel tank capacity");
+                }else
+                {
+                    throw new Exception("charge time requested is greater than the max charge time possible");
+                }
+            /* } else if (i_IsFuelEngine && (client.m_Vehicle.GetEngine(). != i_FuelType))
+                {
+                    throw new Exception("fuel type does not match the fuel type for this kind of vehicle");
+                }*/
             }
         }
 
@@ -358,14 +394,10 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                     this.m_GarageManager.SetTirePressureToMax(currentLicensePlate);
                     break;
                 case UI.eUserOptions.RefuelVehicle:
-                    if (this.m_CurrentClient.m_Vehicle.GetEngine().GetEngineType().Equals(Engine.eEngineType.Fuel))
-                    {
-                        ///**********TODO:how to get fuel type************
-                        //this.m_CurrentClient.FuelVehcile(i_LicensePlate, this.m_CurrentClient.m_Vehicle.GetEngine());
-                    }
+                    RePowreVehcile(true);
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
-                    reChargeVehcile();
+                    RePowreVehcile(false);
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
                     string outoutDetails = this.m_GarageManager.GetFullClientInfo(currentLicensePlate);
