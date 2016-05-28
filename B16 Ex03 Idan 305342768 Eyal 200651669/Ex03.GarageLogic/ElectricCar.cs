@@ -44,7 +44,6 @@ namespace Ex03.GarageLogic
             this.m_Engine = new ElectricEngine(i_ChargeTimeLeft, k_MaxChargeTime);
             this.m_EnergyPrecentageLeft = i_ChargeTimeLeft / k_MaxChargeTime;
 
-
             return this;
         }
 

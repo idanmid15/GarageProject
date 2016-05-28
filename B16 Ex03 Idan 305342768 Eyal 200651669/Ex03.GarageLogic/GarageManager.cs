@@ -73,6 +73,7 @@ namespace Ex03.GarageLogic
                 {
                     clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
                 }
+
                 index++;
             }
 
@@ -80,6 +81,7 @@ namespace Ex03.GarageLogic
             {
                 clientPropertiesString.Append("sorry, no matching vehicles were found.");
             }
+
             return clientPropertiesString.ToString();
         }
 
@@ -136,6 +138,7 @@ namespace Ex03.GarageLogic
             {
                 toReturn = client.ToString();
             }
+
             return toReturn;
         }
 

@@ -33,8 +33,6 @@ namespace Ex03.GarageLogic
             m_TypeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
         }
 
-
-
         public override string ToString()
         {
             StringBuilder clientString = new StringBuilder();

@@ -42,6 +42,7 @@ namespace Ex03.GarageLogic
             {
                 this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);
             }
+
             this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFueledEngine, k_FuelType);
             this.m_EnergyPrecentageLeft = i_CurrentFuelAmount / k_MaxFueledEngine;
             this.m_IsCarryingToxic = i_IsCarryingToxic;

@@ -1,6 +1,6 @@
 ﻿using System;
-using Ex03.GarageLogic;
 using System.Collections.Generic;
+using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
@@ -35,6 +35,21 @@ namespace Ex03.ConsoleUI
             this.m_CurrentClient = null;
         }
 
+        public static void OutputToConsole(string i_Text)
+        {
+            Console.WriteLine(i_Text);
+        }
+
+        public static string InputFromConsole()
+        {
+            return Console.ReadLine();
+        }
+
+        public static void OutputClearConsole()
+        {
+            Console.Clear();
+        }
+
         public void RunUI()
         {
             string userAction = string.Empty;
@@ -60,6 +75,7 @@ namespace Ex03.ConsoleUI
                     OutputClearConsole();
                     OutputToConsole(string.Format("****Thank you! We've found your details in our system****{0}", Environment.NewLine));
                 }
+
                 ChooseUserActions(licensePlate);
             }
         }
@@ -99,7 +115,6 @@ namespace Ex03.ConsoleUI
             string[] clientDetails = enterNewClientDetails();
             client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair, clientVehicle);
             return client;
-
         }
 
         private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle, string i_LicensePlate)
@@ -142,8 +157,7 @@ namespace Ex03.ConsoleUI
                         try
                         {
                             parsedMemberInput = UserInputExceptions.ParseFuelOrChargeAmount(i_SupportedVehicle, InputFromConsole());
-                            isMemberValid = true;
-
+                            isMemberValid = true;                  
                         }
                         catch (ValueOutOfRangeException e)
                         {
@@ -160,6 +174,7 @@ namespace Ex03.ConsoleUI
                     OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
                     isMemberValid = false;
                 }
+
                 while (!isMemberValid)
                 {
                     try
@@ -173,8 +188,8 @@ namespace Ex03.ConsoleUI
                         OutputToConsole(e.Message);
                     }
                 }
-                membersFromInputList.Add(parsedMemberInput);
 
+                membersFromInputList.Add(parsedMemberInput);
                 }
             //create a new vehicle instance with all relevant params for the specific car type given
             vehicleMembersArray = membersFromInputList.ToArray();
@@ -259,6 +274,7 @@ enter 3 (or 'None') for no filter on the results"));
                     continue;
                 }
             }
+
             OutputToConsole(displayFilterString);
         }
 
@@ -283,6 +299,7 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                     Console.WriteLine(e.Message);
                     continue;
                 }
+
                 this.m_GarageManager.UpdateCarStatus(i_LicensePlate, newStatus);
                 OutputToConsole(string.Format("License plate No. {0} changed status to {1}", i_LicensePlate, newStatus.ToString()));
             }
@@ -301,7 +318,8 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             {
                 OutputToConsole("Enter the amount you wish to fuel:");
             }
-            else { 
+            else
+            { 
                 OutputToConsole("Enter how much time you wish to charge:");
             }
 
@@ -325,7 +343,6 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                 //repower the vehicle
                 if (isFuelEngine)
                 {
-
                     OutputToConsole(string.Format(
 @"Enter Fuel type:
 Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
@@ -368,14 +385,11 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                 if (i_IsFuelEngine)
                 {
                     throw new Exception("Fuel amount requested is greater than the fuel tank capacity");
-                }else
+                }
+                else
                 {
                     throw new Exception("charge time requested is greater than the max charge time possible");
                 }
-            /* } else if (i_IsFuelEngine && (client.m_Vehicle.GetEngine(). != i_FuelType))
-                {
-                    throw new Exception("fuel type does not match the fuel type for this kind of vehicle");
-                }*/
             }
         }
 
@@ -438,22 +452,6 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                     OutputToConsole(outoutDetails);
                     break;
             }
-
-        }
-
-        public static void OutputToConsole(string i_Text)
-        {
-            Console.WriteLine(i_Text);
-        }
-
-        public static string InputFromConsole()
-        {
-            return Console.ReadLine();
-        }
-
-        public static void OutputClearConsole()
-        {
-            Console.Clear();
         }
     }
 }

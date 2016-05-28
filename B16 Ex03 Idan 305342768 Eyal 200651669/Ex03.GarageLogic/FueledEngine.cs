@@ -16,8 +16,7 @@
             float i_CurrentFuelAmount,
             float i_MaxFuelAmount,
             eFuelType i_FuelType) : base(i_MaxFuelAmount, i_CurrentFuelAmount)
-        {
-            
+        {          
             m_EngineType = eEngineType.Fuel;
             m_FuelType = i_FuelType;
         }
