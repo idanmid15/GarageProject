@@ -23,14 +23,14 @@ namespace Ex03.GarageLogic
             return m_VehicleMembersList;
         }
 
-        public Vehicle Constructor(
+        public Vehicle Construct(
             string i_ModelType,
             string i_LicensePlate,
             string i_WheelManufacturer,
             float[] i_TirePressures,
-            float i_CurrentFuelAmount,
             eLicenseType i_LicenseType,
-            int i_EngineVolume)
+            int i_EngineVolume,
+            float i_CurrentFuelAmount)
         {
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
