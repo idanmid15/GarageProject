@@ -26,5 +26,7 @@
         {
             return this.m_FuelType;
         }
+
+        public override get
     }
 }
