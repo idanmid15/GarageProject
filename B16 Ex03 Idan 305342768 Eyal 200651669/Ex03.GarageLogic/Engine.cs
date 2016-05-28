@@ -9,8 +9,8 @@
             Other
         }
 
-        protected eEngineType m_EngineType;
         protected readonly float r_MaxPowerAmount;
+        protected eEngineType m_EngineType;
         protected float m_CurrentPowerAmount;
 
         public float MaxPowerAmount
@@ -28,6 +28,7 @@
             {
                 throw new ValueOutOfRangeException(0, i_MaxPowerAmount);
             }
+
             m_CurrentPowerAmount = i_CurrentPowerAmount;
         }
 

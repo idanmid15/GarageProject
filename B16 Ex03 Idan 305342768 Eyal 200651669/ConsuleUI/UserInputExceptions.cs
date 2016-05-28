@@ -9,7 +9,6 @@ namespace Ex03.ConsoleUI
 
         public static object ExceptionParser(string i_Input, Type i_Type)
         {
-
             object parsedMemberInput = null;
             switch (i_Type.ToString())
             {
@@ -116,6 +115,7 @@ namespace Ex03.ConsoleUI
                 default:
                     throw new FormatException("Invalid input, you must enter a number (1-5) represting a supported vehicle");
             }
+
             return vehicleTypeInput;
         }
 
@@ -150,10 +150,12 @@ namespace Ex03.ConsoleUI
                     default:
                         throw new FormatException("Invalid input, you must enter a number (1-7) represting an action in our garage");
                 }
-            } catch
+            }
+            catch
             {
                 throw new FormatException("Invalid input, you must enter a number (1-7) represting an action in our garage");
             }
+
             return userOption;
         }
 
@@ -181,6 +183,7 @@ namespace Ex03.ConsoleUI
             {
                 throw new FormatException("Invalid input, must be 1 (or 'InRepair'), 2 (or 'NotInRepair') or 3 (or 'None') for no filter");
             }
+
             return userOption;
         }
 
@@ -205,6 +208,7 @@ namespace Ex03.ConsoleUI
             {
                 throw new FormatException("Invalid input, must be 1 (or 'InRepair'), 2 (or 'NotInRepair')");
             }
+
             return userOption;
         }
 
@@ -235,6 +239,7 @@ namespace Ex03.ConsoleUI
             {
                 throw new FormatException("Invalid input, must be 'Black', 'Red', 'White' or 'Yellow'");
             }
+
             return userOption;
         }
 
@@ -265,6 +270,7 @@ namespace Ex03.ConsoleUI
             {
                 throw new FormatException("Invalid input, must be 'Two', 'Three', 'Four' or 'Five'");
             }
+
             return userOption;
         }
 
@@ -276,7 +282,10 @@ namespace Ex03.ConsoleUI
                  case FueledEngine.eFuelType.Octan95:
                      userOption = FueledEngine.eFuelType.Octan95;
                      break;
-                 case FueledEngine.eFuelType.Octan98:
+                case FueledEngine.eFuelType.Octan96:
+                    userOption = FueledEngine.eFuelType.Octan96;
+                    break;
+                case FueledEngine.eFuelType.Octan98:
                      userOption = FueledEngine.eFuelType.Octan98;
                      break;
                 case FueledEngine.eFuelType.Octan96:
@@ -288,6 +297,7 @@ namespace Ex03.ConsoleUI
                  default:
                      throw new FormatException("Invalid input, must be 'Octan95', 'Octan96', Octan98' or 'Soler'");
              }
+
              return userOption;
          }
 
@@ -305,9 +315,9 @@ namespace Ex03.ConsoleUI
                 default:
                     throw new FormatException("Invalid input, must be 'yes' or 'no'");
             }
+
             return userOption;
         }
-
 
         public static Bike.eLicenseType ParseBikeLicenseType(string i_Input)
         {
@@ -336,6 +346,7 @@ namespace Ex03.ConsoleUI
             {
                 throw new FormatException("Invalid input, valid licenses are: 'A', 'A1', 'AB' or 'B1'");
             }
+
             return userOption;
         }
 
@@ -345,37 +356,44 @@ namespace Ex03.ConsoleUI
             switch (i_Vehicle)
             {
                 case GarageManager.eSupportedVehciles.ElectricBike:
-                    if (floatInput > 1.9f || floatInput < 0) {
+                    if (floatInput > 1.9f || floatInput < 0)
+                    {
                         throw new GarageLogic.ValueOutOfRangeException(0, 1.9f);
                     }
+
                     break;
                 case GarageManager.eSupportedVehciles.ElectricCar:
                     if (floatInput > 3.3f || floatInput < 0)
                     {
                         throw new GarageLogic.ValueOutOfRangeException(0, 3.3f);
                     }
+
                     break;
                 case GarageManager.eSupportedVehciles.FueledBike:
                     if (floatInput > 7.2f || floatInput < 0)
                     {
                         throw new GarageLogic.ValueOutOfRangeException(0, 7.2f);
                     }
+
                     break;
                 case GarageManager.eSupportedVehciles.FueledCar:
                     if (floatInput > 38f || floatInput < 0)
                     {
                         throw new GarageLogic.ValueOutOfRangeException(0, 38f);
                     }
+
                     break;
                 case GarageManager.eSupportedVehciles.Truck:
                     if (floatInput > 135f || floatInput < 0)
                     {
                         throw new GarageLogic.ValueOutOfRangeException(0, 135f);
                     }
+
                     break;
                 default:
                     break;
             }
+
             return floatInput;
         }
 

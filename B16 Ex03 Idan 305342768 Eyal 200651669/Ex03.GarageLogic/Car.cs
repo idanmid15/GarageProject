@@ -41,6 +41,5 @@ namespace Ex03.GarageLogic
             toReturnBuilder.AppendFormat("Number of doors: {0}{1}", m_NumOfDoors, Environment.NewLine);
             return toReturnBuilder.ToString();
         }
-    }   
-
+    }  
 }

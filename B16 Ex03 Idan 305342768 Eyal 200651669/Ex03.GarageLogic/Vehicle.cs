@@ -40,8 +40,8 @@ namespace Ex03.GarageLogic
             for (int i = 0; i < m_Wheels.Length; i++)
             {
                 toReturnBuilder.AppendFormat("{0} {1}{2}", i + 1, m_Wheels[i], Environment.NewLine);
-
             }
+
             return toReturnBuilder.ToString();
         }
 
