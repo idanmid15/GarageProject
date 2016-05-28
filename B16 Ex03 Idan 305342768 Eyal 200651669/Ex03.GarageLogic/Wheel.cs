@@ -33,5 +33,10 @@
             this.m_CurrentTirePressure = i_TirePressure;
             this.r_MaxTirePressure = i_MaxTirePressure;
         }
+
+        public override string ToString()
+        {
+            return string.Format("Tire pressure: {0}{1}", m_CurrentTirePressure, System.Environment.NewLine);
+        }
     }
 }

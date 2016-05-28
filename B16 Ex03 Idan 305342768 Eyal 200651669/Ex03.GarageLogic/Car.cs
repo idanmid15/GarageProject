@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public class Car : Vehicle
+    public abstract class Car : Vehicle
     {
         public enum eCarColor
         {
@@ -26,9 +27,20 @@ namespace Ex03.GarageLogic
         protected eCarColor m_CarColor;
         protected eNumOfDoors m_NumOfDoors;
 
-        public override List<MemberTranslator> GetAllVehicleMembers()
+        protected List<MemberTranslator> m_CarMembersList = new List<MemberTranslator>
         {
-            return null;
+            new MemberTranslator("m_CarColor", "car color", typeof(eCarColor)),
+            new MemberTranslator("m_NumOfDoors", "number of doors", typeof(eNumOfDoors)),
+        };
+
+        public override string ToString()
+        {
+            StringBuilder toReturnBuilder = new StringBuilder();
+            toReturnBuilder.Append(base.ToString());
+            toReturnBuilder.AppendFormat("Car Color: {0}{1}", m_CarColor, Environment.NewLine);
+            toReturnBuilder.AppendFormat("Number of doors: {0}{1}", m_NumOfDoors, Environment.NewLine);
+            return toReturnBuilder.ToString();
         }
-    }
+    }   
+
 }

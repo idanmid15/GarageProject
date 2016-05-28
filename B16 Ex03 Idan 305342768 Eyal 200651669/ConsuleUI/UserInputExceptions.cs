@@ -15,26 +15,27 @@ namespace Ex03.ConsoleUI
                     parsedMemberInput = i_Input;
                     break;
                 case "System.Single":
-                    parsedMemberInput = UserInputExceptions.ParseFloatInput(i_Input);
+                    parsedMemberInput = ParseFloatInput(i_Input);
                     break;
                 case "System.Int32":
-                    parsedMemberInput = UserInputExceptions.ParseIntegerInput(i_Input);
+                    parsedMemberInput = ParseIntegerInput(i_Input);
                     break;
                 case "System.Boolean":
-                    parsedMemberInput = UserInputExceptions.ParseToxicInput(i_Input);
+                    parsedMemberInput = ParseToxicInput(i_Input);
                     break;
                 case "Ex03.GarageLogic.Bike+eLicenseType":
-                    parsedMemberInput = UserInputExceptions.ParseBikeLicenseType(i_Input);
+                    parsedMemberInput = ParseBikeLicenseType(i_Input);
                     break;
                 case "Ex03.GarageLogic.Car+eNumOfDoors":
-                    parsedMemberInput = UserInputExceptions.ParseNumOfDoorsInput(i_Input);
+                    parsedMemberInput = ParseNumOfDoorsInput(i_Input);
                     break;
                 case "Ex03.GarageLogic.Car+eCarColor":
-                    parsedMemberInput = UserInputExceptions.ParseCarColorInput(i_Input);
+                    parsedMemberInput = ParseCarColorInput(i_Input);
                     break;
                 default:
                     break;
             }
+
             return parsedMemberInput;
         }
 
@@ -79,7 +80,6 @@ namespace Ex03.ConsoleUI
 
             return i_Input;
         }
-
 
         public static GarageManager.eSupportedVehciles ParseVehicleTypeInput(string i_Input, GarageManager i_GarageManager)
         {

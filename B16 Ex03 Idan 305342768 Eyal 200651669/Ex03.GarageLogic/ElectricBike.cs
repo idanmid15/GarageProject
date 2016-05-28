@@ -1,43 +1,35 @@
 ﻿using Ex03.GarageLogic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
     public class ElectricBike : Bike
     {
         private const float k_MaxChargeTime = 1.9f;
-        List<MemberTranslator> k_VehicleMembersList = new List<MemberTranslator>
-        {
-            new MemberTranslator("m_ModelType", "model type", typeof(string)),
-            new MemberTranslator("m_LicensePlate", "license plate", typeof(string)),
-            new MemberTranslator("m_WheelManufacturer", "wheels Manufacturer", typeof(string)),
-            new MemberTranslator("m_ChargeTimeLeft", "charge time left", typeof(float)),
-            new MemberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
-            new MemberTranslator("m_EngineVolume", "engine volume", typeof(int)),
-            new MemberTranslator("m_Wheels", "pressure of all wheels", typeof(float[]))
-        };
-
-
+            
         public ElectricBike()
         {
             this.m_NumOfWheels = k_NumOfWheels;
-            this.m_Wheels = new Wheel[k_NumOfWheels];          
+            this.m_Wheels = new Wheel[k_NumOfWheels];  
+            this.m_VehicleMembersList.AddRange(m_BikeMembersList);
+            this.m_VehicleMembersList.Add(new MemberTranslator("m_ChargeTimeLeft", "charge time left", typeof(float)));
         }
 
-        public override List<MemberTranslator>  GetAllVehicleMembers()
+        public override List<MemberTranslator> GetAllVehicleMembers()
         {
-            return k_VehicleMembersList;
+            return m_VehicleMembersList;
         }
 
         public Vehicle Construct(
             string i_ModelType,
             string i_LicensePlate,
             string i_WheelManufacturer,
-            float i_ChargeTimeLeft,
+            float[] i_TirePressures,
             eLicenseType i_LicenseType,
             int i_EngineVolume,
-            float[] i_TirePressures)
+            float i_ChargeTimeLeft)
         {
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
@@ -57,6 +49,14 @@ namespace Ex03.GarageLogic
         public float getMaxTimeToCharge()
         {
             return k_MaxChargeTime;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder toReturnBuilder = new StringBuilder();
+            toReturnBuilder.AppendFormat("Vehicle Type: Electric Bike{0}", Environment.NewLine);
+            toReturnBuilder.Append(base.ToString());
+            return toReturnBuilder.ToString();
         }
     }
 }
