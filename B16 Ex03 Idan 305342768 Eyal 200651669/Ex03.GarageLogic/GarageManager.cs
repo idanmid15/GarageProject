@@ -110,7 +110,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void FuelVehcile(string i_LicensePlate, FueledEngine.eFuelType i_FuelType, float i_FuelAmount)
+        public void FuelVehicle(string i_LicensePlate, FueledEngine.eFuelType i_FuelType, float i_FuelAmount)
         {
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))

@@ -286,7 +286,7 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             }
         }
 
-        public void RePowreVehcile(Boolean isFuelEngine)
+        public void RePowerVehcile(bool isFuelEngine)
         {
             bool isValidInput = false;
             string licesnsePlateInput = string.Empty;
@@ -299,9 +299,8 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             {
                 OutputToConsole("Enter the amount you wish to fuel:");
             }
-            else
-                OutputToConsole("Enter the how much time you wish to charge:");
-            {
+            else { 
+                OutputToConsole("Enter how much time you wish to charge:");
             }
 
             while (!isValidInput)
@@ -313,7 +312,7 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
                 }
                 catch (FormatException e)
                 {
-                    Console.WriteLine(e.Message);
+                    OutputToConsole(e.Message);
                     continue;
                 }
             }
@@ -331,7 +330,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                     fuelTypeInput = InputFromConsole();
                     FueledEngine.eFuelType parsedFuelType = UserInputExceptions.ParseFuelTypeInput(fuelTypeInput);
                     CheckIfRepowerArgsExceptions(licesnsePlateInput, repowerAmountInput, isFuelEngine, parsedFuelType);
-                    this.m_GarageManager.FuelVehcile(licesnsePlateInput, parsedFuelType, repowerAmountInput);
+                    this.m_GarageManager.FuelVehicle(licesnsePlateInput, parsedFuelType, repowerAmountInput);
                     OutputToConsole(string.Format("vehicle {0} has been fueled with {1} liters", licesnsePlateInput, repowerAmountInput));
                 }
                 else
@@ -384,6 +383,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             string currentLicensePlate = this.m_CurrentClient.m_Vehicle.GetLicensePlate();
             bool isValidAction = false;
             string userActionInput = string.Empty;
+            const bool v_IsFueledEngine = true;
             OutputToConsole(
 @"Choose the action you would like to make (by entering it's number):
 1. Insert a new vehicle
@@ -426,10 +426,10 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                     this.m_GarageManager.SetTirePressureToMax(currentLicensePlate);
                     break;
                 case UI.eUserOptions.RefuelVehicle:
-                    RePowreVehcile(true);
+                    RePowerVehcile(v_IsFueledEngine);
                     break;
                 case UI.eUserOptions.ReChargeVehicle:
-                    RePowreVehcile(false);
+                    RePowerVehcile(!v_IsFueledEngine);
                     break;
                 case UI.eUserOptions.DisplayCarInfo:
                     string outoutDetails = this.m_GarageManager.GetFullClientInfo(currentLicensePlate);
