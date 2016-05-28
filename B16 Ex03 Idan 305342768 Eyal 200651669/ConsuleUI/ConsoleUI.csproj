@@ -32,8 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ex03.GarageLogic, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ex03.GarageLogic">
       <HintPath>..\Ex03.GarageLogic\obj\Debug\Ex03.GarageLogic.dll</HintPath>
     </Reference>
     <Reference Include="System" />

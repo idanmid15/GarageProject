@@ -58,16 +58,7 @@ namespace Ex03.GarageLogic
             return this.m_CurrentVehicleConstruction;
         }
 
-
-        public GarageClient CreateNewClient(string i_ClientName, string i_ClientPhone, Vehicle i_Vehicle)
-        {
-            GarageClient newClient = new GarageClient(i_ClientName, i_ClientPhone,
-                i_Vehicle, GarageClient.eVehicleStatus.InRepair);
-            m_GarageDictonary.Add(i_Vehicle.GetLicensePlate(), newClient);
-            return newClient;
-        }
-
-        public string DisplayVehcilesInGarage(GarageClient.eVehicleStatus i_Status)
+        public string DisplayVehiclesInGarage(GarageClient.eVehicleStatus i_Status)
         {
             string clientLicensePlate = string.Empty;
             StringBuilder clientPropertiesString = new StringBuilder();
@@ -78,7 +69,7 @@ namespace Ex03.GarageLogic
                 clientLicensePlate = vehicleEntry.Value.m_Vehicle.GetLicensePlate();
                 if (i_Status == GarageClient.eVehicleStatus.None)
                 {
-                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}",index, clientLicensePlate, Environment.NewLine));
+                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
                 }
                 else if (vehicleEntry.Value.m_Status == i_Status)
                 {
@@ -100,7 +91,8 @@ namespace Ex03.GarageLogic
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 client.m_Status = i_NewSatus;
-            } else
+            }
+            else
             {
                 throw new Exception("License plate number not found in the garage");
             }
@@ -140,26 +132,16 @@ namespace Ex03.GarageLogic
 
         public string GetFullClientInfo(string i_LicensePlate)
         {
-            StringBuilder clientProperties = new StringBuilder();
             GarageClient client = null;
-
+            string toReturn = string.Empty;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                MemberInfo[] members = client.GetType().GetMembers();
-                foreach (var memberInfo in members)
-                {
-                    if (memberInfo is FieldInfo)
-                    {
-                        //object memberValue = ((FieldInfo)memberInfo).GetValue(memberInfo);
-                        clientProperties.Append(string.Format("{0} : {1}{2}", memberInfo.Name,
-                            memberInfo.MemberType.ToString(), Environment.NewLine));
-                    }
-                }
+                toReturn = client.ToString();
             }
-                    return clientProperties.ToString(); ;
+            return toReturn;
         }
 
-        public void setGarageDictonary(string i_LicensePlate, GarageClient i_Client)
+        public void AddClient(string i_LicensePlate, GarageClient i_Client)
         {
             this.m_GarageDictonary.Add(i_LicensePlate, i_Client);
         }

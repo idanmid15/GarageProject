@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public class Bike : Vehicle
+    public abstract class Bike : Vehicle
     {
         public enum eLicenseType
         {
@@ -17,10 +18,19 @@ namespace Ex03.GarageLogic
         protected const int k_NumOfWheels = 2;
         protected eLicenseType m_LicenseType;
         protected int m_EngineVolume;
-
-        public override List<MemberTranslator> GetAllVehicleMembers()
+        protected List<MemberTranslator> m_BikeMembersList = new List<MemberTranslator>
         {
-            return null;
+            new MemberTranslator("m_LicenseType", "license type", typeof(eLicenseType)),
+            new MemberTranslator("m_EngineVolume", "engine volume", typeof(int))
+        };
+
+        public override string ToString()
+        {
+            StringBuilder toReturnBuilder = new StringBuilder();
+            toReturnBuilder.Append(base.ToString());
+            toReturnBuilder.AppendFormat("License Type: {0}{1}", m_LicenseType.ToString(), Environment.NewLine);
+            toReturnBuilder.AppendFormat("Engine Volume: {0}{1}", m_EngineVolume, Environment.NewLine);
+            return toReturnBuilder.ToString();
         }
     }
 }

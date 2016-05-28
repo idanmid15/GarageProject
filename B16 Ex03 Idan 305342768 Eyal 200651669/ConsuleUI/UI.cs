@@ -48,12 +48,13 @@ namespace Ex03.ConsoleUI
                 //create a new client profile
                 this.m_CurrentClient = EnterNewClient();
                 //enter the new client to our data structure
-                this.m_GarageManager.setGarageDictonary(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
+                this.m_GarageManager.AddClient(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
             }
 
             Console.Clear();
             OutputToConsole("****Thank you! We've entered your details into our system****");
             ChooseUserActions(licensePlate);
+            RunUI();
         }
 
         public GarageClient EnterNewClient()
@@ -89,7 +90,7 @@ namespace Ex03.ConsoleUI
             Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
 
             string[] clientDetails = enterNewClientDetails();
-            client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair);
+            client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair, clientVehicle);
             return client;
 
         }
@@ -216,7 +217,7 @@ enter 3 (or 'None') for no filter on the results"));
                 try
                 {
                     vehicleDisplayFilter = UserInputExceptions.ParseVehicleDisplayFilter(InputFromConsole());
-                    displayFilterString = this.m_GarageManager.DisplayVehcilesInGarage(vehicleDisplayFilter);
+                    displayFilterString = this.m_GarageManager.DisplayVehiclesInGarage(vehicleDisplayFilter);
                     isValidFilter = true;
                 }
                 catch (FormatException e)
