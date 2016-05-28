@@ -42,11 +42,11 @@ namespace Ex03.ConsoleUI
                     Environment.NewLine));
             string licensePlate = InputFromConsole();
 
-            if (this.m_GarageManager.ManageClient(licensePlate) == true)
+            if (!this.m_GarageManager.ClientExists(licensePlate))
             {
                 OutputToConsole("your car is'nt in our garage.");
                 //create a new client profile
-                this.m_CurrentClient = EnterNewClient();
+                this.m_CurrentClient = EnterNewClient(licensePlate);
                 //enter the new client to our data structure
                 this.m_GarageManager.AddClient(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
             }
@@ -54,10 +54,9 @@ namespace Ex03.ConsoleUI
             Console.Clear();
             OutputToConsole("****Thank you! We've entered your details into our system****");
             ChooseUserActions(licensePlate);
-            RunUI();
         }
 
-        public GarageClient EnterNewClient()
+        public GarageClient EnterNewClient(string i_LicensePlate)
         {
             GarageClient client = null;
             string clientVehicleOptionString = string.Empty;
@@ -87,7 +86,7 @@ namespace Ex03.ConsoleUI
                 }
             }
 
-            Vehicle newVehicle = enterNewVehicleMembers(clientVehicle);
+            Vehicle newVehicle = enterNewVehicleMembers(clientVehicle, i_LicensePlate);
 
             string[] clientDetails = enterNewClientDetails();
             client = new GarageClient(clientDetails[0], clientDetails[1], newVehicle, GarageClient.eVehicleStatus.InRepair, clientVehicle);
@@ -95,7 +94,7 @@ namespace Ex03.ConsoleUI
 
         }
 
-        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle)
+        private Vehicle enterNewVehicleMembers(GarageManager.eSupportedVehciles i_SupportedVehicle, string i_LicensePlate)
         {
             List<MemberTranslator> vehicleMembersList = null;
             List<object> membersFromInputList = new List<object>();
@@ -104,7 +103,7 @@ namespace Ex03.ConsoleUI
             string memberInput = string.Empty;
             int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
-            object ParsedMemberInput = null;
+            object parsedMemberInput = null;
 
             vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
 
@@ -115,10 +114,15 @@ namespace Ex03.ConsoleUI
                 {
                     if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
                     {
-                        ParsedMemberInput = enterNewTiresArray(o_NumOfTires);
+                        parsedMemberInput = enterNewTiresArray(o_NumOfTires);
                         isMemberValid = true;
                     }
                     //for all the rest of the members
+                }
+                else if (param.m_MemberName == "m_LicensePlate")
+                {
+                    parsedMemberInput = i_LicensePlate;
+                    isMemberValid = true;
                 }
                 else
                 {
@@ -130,7 +134,7 @@ namespace Ex03.ConsoleUI
                     try
                     {
                         memberInput = InputFromConsole();
-                        ParsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
+                        parsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
                         isMemberValid = true;
                     }
                     catch (Exception e)
@@ -138,7 +142,7 @@ namespace Ex03.ConsoleUI
                         OutputToConsole(e.Message);
                     }
                 }
-                membersFromInputList.Add(ParsedMemberInput);
+                membersFromInputList.Add(parsedMemberInput);
 
             }
 
@@ -157,7 +161,7 @@ namespace Ex03.ConsoleUI
 
             for (int i = 0; i < tiresArray.Length; i++)
             {
-                OutputToConsole(string.Format("enter pressure of tire No. {0}:", i));
+                OutputToConsole(string.Format("enter pressure of tire No. {0}:", i + 1));
                 isValid = false;
                 while (!isValid)
                 {
@@ -382,7 +386,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             switch (userOption)
             {
                 case UI.eUserOptions.InsertNewVehicle:
-                    EnterNewClient();
+                    EnterNewClient(i_LicensePlate);
                     break;
                 case UI.eUserOptions.DisplayFilteredLicenses:
                     DisplayFilteredGarageVehicles();

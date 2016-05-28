@@ -25,18 +25,17 @@ namespace Ex03.GarageLogic
             m_CurrentVehicleConstruction = null;
         }
 
-        public bool ManageClient(string i_LicensePlate)
+        public bool ClientExists(string i_LicensePlate)
         {
-            //1 - means the car already in the shop, 0 means new car entry
-            bool isNewClient = true;
+            bool doesClientExist = false;
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
                 client.m_Status = GarageClient.eVehicleStatus.InRepair;
-                isNewClient = false;
+                doesClientExist = true;
             }
 
-            return isNewClient;
+            return doesClientExist;
         }
 
         public List<MemberTranslator> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)

@@ -27,9 +27,9 @@ namespace Ex03.GarageLogic
             string i_LicensePlate,
             string i_WheelManufacturer,
             float[] i_TirePressures,
-            float i_CurrentFuelAmount,
             eCarColor i_CarColor,
-            eNumOfDoors i_NumOfDoors)
+            eNumOfDoors i_NumOfDoors,
+            float i_CurrentFuelAmount)
         {
             this.m_ModelType = i_ModelType;
             this.m_LicensePlate = i_LicensePlate;
