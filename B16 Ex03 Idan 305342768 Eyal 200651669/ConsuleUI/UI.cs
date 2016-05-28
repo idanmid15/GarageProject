@@ -123,7 +123,7 @@ namespace Ex03.ConsoleUI
                 {
                     if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
                     {
-                        parsedMemberInput = enterNewTiresArray(o_NumOfTires);
+                        parsedMemberInput = enterNewTiresArray(o_NumOfTires, i_SupportedVehicle);
                         isMemberValid = true;
                     }
                     //for all the rest of the members
@@ -182,7 +182,7 @@ namespace Ex03.ConsoleUI
             return vehicleInstance;
         }
 
-        private float[] enterNewTiresArray(int i_NumOfWheels)
+        private float[] enterNewTiresArray(int i_NumOfWheels, GarageManager.eSupportedVehciles i_Vehicle)
         {
             float[] tiresArray = new float[i_NumOfWheels];
             string memberInput = string.Empty;
@@ -198,8 +198,16 @@ namespace Ex03.ConsoleUI
                     memberInput = InputFromConsole();
                     if (Single.TryParse(memberInput, out o_Tire))
                     {
-                        tiresArray[i] = o_Tire;
-                        isValid = true;
+                        try
+                        {
+                            UserInputExceptions.ParseTirePressure(i_Vehicle, memberInput);
+                            tiresArray[i] = o_Tire;
+                            isValid = true;
+                        }
+                        catch (ValueOutOfRangeException e)
+                        {
+                            OutputToConsole(string.Format("{0} Only {1} - {2}{3}", e.Message, e.MinValue, e.MaxValue, Environment.NewLine));
+                        }
                     }
                     else
                     {
@@ -372,10 +380,14 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                 {
                     throw new Exception("charge time requested is greater than the max charge time possible");
                 }
-            /* } else if (i_IsFuelEngine && (client.m_Vehicle.GetEngine(). != i_FuelType))
+            }
+            else if (client.m_Vehicle.m_Engine is FueledEngine)
+            {
+                FueledEngine currentFueledEngine = (FueledEngine)client.m_Vehicle.m_Engine;
+                if (currentFueledEngine.GetFuelType() != i_FuelType)
                 {
-                    throw new Exception("fuel type does not match the fuel type for this kind of vehicle");
-                }*/
+                    throw new Exception(string.Format("Fuel type requested, does not match the fuel type of this vehicle ({0}).", currentFueledEngine.GetFuelType()));
+                }
             }
         }
 
@@ -389,7 +401,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             OutputToConsole(
 @"Choose the action you would like to make (by entering it's number):
 1. Insert a new vehicle
-2. Display lisence plates in garage (filtered)
+2. Display license plates in garage (filtered)
 3. Change vehicle status (by license plate)
 4. set tires pressure (by license plate)
 5. ReFuel vehicle (by license plate)

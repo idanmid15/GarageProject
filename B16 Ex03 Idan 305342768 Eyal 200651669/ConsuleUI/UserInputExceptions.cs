@@ -5,6 +5,8 @@ namespace Ex03.ConsoleUI
 {
     public class UserInputExceptions
     {
+        public static object Garagemanager { get; private set; }
+
         public static object ExceptionParser(string i_Input, Type i_Type)
         {
 
@@ -277,7 +279,10 @@ namespace Ex03.ConsoleUI
                  case FueledEngine.eFuelType.Octan98:
                      userOption = FueledEngine.eFuelType.Octan98;
                      break;
-                 case FueledEngine.eFuelType.Soler:
+                case FueledEngine.eFuelType.Octan96:
+                    userOption = FueledEngine.eFuelType.Octan96;
+                    break;
+                case FueledEngine.eFuelType.Soler:
                      userOption = FueledEngine.eFuelType.Soler;
                      break;
                  default:
@@ -370,6 +375,26 @@ namespace Ex03.ConsoleUI
                     break;
                 default:
                     break;
+            }
+            return floatInput;
+        }
+
+        public static float ParseTirePressure(GarageManager.eSupportedVehciles i_Vehicle, string i_Input)
+        {
+            float floatInput = ParseFloatInput(i_Input);
+            if (i_Vehicle == GarageManager.eSupportedVehciles.Truck)
+            {
+                if (floatInput > 28 || floatInput < 0)
+                {
+                    throw new ValueOutOfRangeException(0, 28);
+                }
+            }
+            else
+            {
+                if (floatInput > 31 || floatInput < 0)
+                {
+                    throw new ValueOutOfRangeException(0, 31);
+                }
             }
             return floatInput;
         }
