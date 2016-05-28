@@ -31,7 +31,6 @@ namespace Ex03.GarageLogic
             GarageClient client = null;
             if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
             {
-                client.m_Status = GarageClient.eVehicleStatus.InRepair;
                 doesClientExist = true;
             }
 

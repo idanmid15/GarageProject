@@ -38,22 +38,30 @@ namespace Ex03.ConsoleUI
         public void RunUI()
         {
             string userAction = string.Empty;
-            OutputToConsole(string.Format("Hello and Welcome to the garage.{0}what is your license plate number:",
-                    Environment.NewLine));
-            string licensePlate = InputFromConsole();
-
-            if (!this.m_GarageManager.ClientExists(licensePlate))
+            string licensePlate = string.Empty;
+            while (true)
             {
-                OutputToConsole("your car is'nt in our garage.");
-                //create a new client profile
-                this.m_CurrentClient = EnterNewClient(licensePlate);
-                //enter the new client to our data structure
-                this.m_GarageManager.AddClient(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
+                userAction = string.Empty;
+                OutputToConsole(string.Format("Hello and Welcome to the garage.{0}what is your license plate number?",
+                        Environment.NewLine));
+                licensePlate = InputFromConsole();
+                if (!this.m_GarageManager.ClientExists(licensePlate))
+                {
+                    OutputToConsole("your car is'nt in our garage.");
+                    //create a new client profile
+                    this.m_CurrentClient = EnterNewClient(licensePlate);
+                    //enter the new client to our data structure
+                    this.m_GarageManager.AddClient(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
+                    OutputClearConsole();
+                    OutputToConsole(string.Format("****Thank you! We've entered your details into our system****{0}" , Environment.NewLine));
+                }
+                else
+                {
+                    OutputClearConsole();
+                    OutputToConsole(string.Format("****Thank you! We've found your details in our system****{0}", Environment.NewLine));
+                }
+                ChooseUserActions(licensePlate);
             }
-
-            Console.Clear();
-            OutputToConsole("****Thank you! We've entered your details into our system****");
-            ChooseUserActions(licensePlate);
         }
 
         public GarageClient EnterNewClient(string i_LicensePlate)
