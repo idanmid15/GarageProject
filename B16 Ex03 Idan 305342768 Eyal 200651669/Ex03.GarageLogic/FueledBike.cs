@@ -17,6 +17,14 @@ namespace Ex03.GarageLogic
             this.m_VehicleMembersList.Add(new MemberTranslator("m_CurrentFuelAmount", "current fuel amount", typeof(float)));
         }
 
+        public float MaxFueledEngine
+        {
+            get
+            {
+                return k_MaxFueledEngine;
+            }
+        }
+
 
         public override List<MemberTranslator> GetAllVehicleMembers()
         {

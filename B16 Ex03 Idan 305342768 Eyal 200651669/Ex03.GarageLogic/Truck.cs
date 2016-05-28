@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         protected const float k_MaxTirePressure = 28;
         protected const int k_NumOfWheels = 16;
         protected const FueledEngine.eFuelType k_FuelType = FueledEngine.eFuelType.Soler;
-        private const float k_MaxFuelCapacity = 135f;
+        private const float k_MaxFueledEngine = 135f;
         protected bool m_IsCarryingToxic;
 
         public Truck()
@@ -42,8 +42,8 @@ namespace Ex03.GarageLogic
             {
                 this.m_Wheels[i] = new Wheel(m_WheelManufacturer, i_TirePressures[i], k_MaxTirePressure);
             }
-            this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFuelCapacity, k_FuelType);
-            this.m_EnergyPrecentageLeft = i_CurrentFuelAmount / k_MaxFuelCapacity;
+            this.m_Engine = new FueledEngine(i_CurrentFuelAmount, k_MaxFueledEngine, k_FuelType);
+            this.m_EnergyPrecentageLeft = i_CurrentFuelAmount / k_MaxFueledEngine;
             this.m_IsCarryingToxic = i_IsCarryingToxic;
 
             return this;

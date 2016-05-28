@@ -53,7 +53,7 @@ namespace Ex03.ConsoleUI
                     //enter the new client to our data structure
                     this.m_GarageManager.AddClient(this.m_CurrentClient.m_Vehicle.GetLicensePlate(), this.m_CurrentClient);
                     OutputClearConsole();
-                    OutputToConsole(string.Format("****Thank you! We've entered your details into our system****{0}", Environment.NewLine));
+                    OutputToConsole(string.Format("****Thank you! We've entered your details into our system****{0}" , Environment.NewLine));
                 }
                 else
                 {
@@ -109,7 +109,6 @@ namespace Ex03.ConsoleUI
             Vehicle vehicleInstance = null;
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
-            bool areParametersValid = false;
             string memberInput = string.Empty;
             int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
@@ -134,6 +133,28 @@ namespace Ex03.ConsoleUI
                     parsedMemberInput = i_LicensePlate;
                     isMemberValid = true;
                 }
+                else if (param.m_MemberName == "m_CurrentFuelAmount" || param.m_MemberName == "m_ChargeTimeLeft")
+                {
+                    isMemberValid = false;
+                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
+                    while (!isMemberValid)
+                    {
+                        try
+                        {
+                            parsedMemberInput = UserInputExceptions.ParseFuelOrChargeAmount(i_SupportedVehicle, InputFromConsole());
+                            isMemberValid = true;
+
+                        }
+                        catch (ValueOutOfRangeException e)
+                        {
+                            OutputToConsole(string.Format("{0} Only {1} - {2}{3}",e.Message, e.MinValue, e.MaxValue, Environment.NewLine));
+                        }
+                        catch (Exception e)
+                        {
+                            OutputToConsole(e.Message);
+                        }
+                    }
+                }
                 else
                 {
                     OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
@@ -154,14 +175,10 @@ namespace Ex03.ConsoleUI
                 }
                 membersFromInputList.Add(parsedMemberInput);
 
-            }
+                }
             //create a new vehicle instance with all relevant params for the specific car type given
             vehicleMembersArray = membersFromInputList.ToArray();
-
-
             vehicleInstance = this.m_GarageManager.CreateVehicle(i_SupportedVehicle, vehicleMembersArray);
-            areParametersValid = true;
-
             return vehicleInstance;
         }
 
@@ -284,8 +301,7 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
             {
                 OutputToConsole("Enter the amount you wish to fuel:");
             }
-            else
-            {
+            else { 
                 OutputToConsole("Enter how much time you wish to charge:");
             }
 
@@ -352,22 +368,15 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                 if (i_IsFuelEngine)
                 {
                     throw new Exception("Fuel amount requested is greater than the fuel tank capacity");
-                }
-                else
+                }else
                 {
                     throw new Exception("charge time requested is greater than the max charge time possible");
                 }
-            }
-            else if (client.m_Vehicle.m_Engine is FueledEngine)
-            {
-                FueledEngine currentFueledEngine = (FueledEngine)client.m_Vehicle.m_Engine;
-                if (i_FuelType != currentFueledEngine.GetFuelType())
+            /* } else if (i_IsFuelEngine && (client.m_Vehicle.GetEngine(). != i_FuelType))
                 {
                     throw new Exception("fuel type does not match the fuel type for this kind of vehicle");
-                }
+                }*/
             }
-
-
         }
 
         public void ChooseUserActions(string i_LicensePlate)

@@ -13,6 +13,14 @@
         protected readonly float r_MaxPowerAmount;
         protected float m_CurrentPowerAmount;
 
+        public float MaxPowerAmount
+        {
+            get
+            {
+                return r_MaxPowerAmount;
+            }
+        }
+
         public Engine(float i_MaxPowerAmount, float i_CurrentPowerAmount)
         {
             r_MaxPowerAmount = i_MaxPowerAmount;
