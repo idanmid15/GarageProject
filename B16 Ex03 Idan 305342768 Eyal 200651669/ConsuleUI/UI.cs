@@ -106,57 +106,76 @@ namespace Ex03.ConsoleUI
         {
             List<MemberTranslator> vehicleMembersList = null;
             List<object> membersFromInputList = new List<object>();
+            Vehicle vehicleInstance = null;
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
+            bool areParametersValid = false;
             string memberInput = string.Empty;
             int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
             object parsedMemberInput = null;
 
-            vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
+            while (!areParametersValid)
+            { 
+                vehicleMembersList = this.m_GarageManager.GetVehicleMembers(i_SupportedVehicle);
 
-            foreach (MemberTranslator param in vehicleMembersList)
-            {
-                //filling the tires requires a different method to form a "tires array"
-                if (param.m_MemberName.Equals("m_Wheels"))
+                foreach (MemberTranslator param in vehicleMembersList)
                 {
-                    if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
+                    //filling the tires require a different method to form a "tires array"
+                    if (param.m_MemberName.Equals("m_Wheels"))
                     {
-                        parsedMemberInput = enterNewTiresArray(o_NumOfTires);
+                        if (NumOfWheelsPerVehicle.TryGetValue(i_SupportedVehicle, out o_NumOfTires))
+                        {
+                            parsedMemberInput = enterNewTiresArray(o_NumOfTires);
+                            isMemberValid = true;
+                        }
+                        //for all the rest of the members
+                    }
+                    else if (param.m_MemberName == "m_LicensePlate")
+                    {
+                        parsedMemberInput = i_LicensePlate;
                         isMemberValid = true;
                     }
-                    //for all the rest of the members
-                }
-                else if (param.m_MemberName == "m_LicensePlate")
-                {
-                    parsedMemberInput = i_LicensePlate;
-                    isMemberValid = true;
-                }
-                else
-                {
-                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
-                    isMemberValid = false;
-                }
-                while (!isMemberValid)
-                {
-                    try
+                    else
                     {
-                        memberInput = InputFromConsole();
-                        parsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
-                        isMemberValid = true;
+                        OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
+                        isMemberValid = false;
                     }
-                    catch (Exception e)
+                    while (!isMemberValid)
                     {
-                        OutputToConsole(e.Message);
+                        try
+                        {
+                            memberInput = InputFromConsole();
+                            parsedMemberInput = UserInputExceptions.ExceptionParser(memberInput, param.m_MemberType);
+                            isMemberValid = true;
+                        }
+                        catch (Exception e)
+                        {
+                            OutputToConsole(e.Message);
+                        }
                     }
-                }
-                membersFromInputList.Add(parsedMemberInput);
+                    membersFromInputList.Add(parsedMemberInput);
 
+                 }
+                //create a new vehicle instance with all relevant params for the specific car type given
+                vehicleMembersArray = membersFromInputList.ToArray();
+                try
+                {
+                    vehicleInstance = this.m_GarageManager.CreateVehicle(i_SupportedVehicle, vehicleMembersArray);
+                    areParametersValid = true;
+                } 
+                catch (Exception e)
+                {
+                    if (e.InnerException is GarageLogic.ValueOutOfRangeException)
+                    {
+                        GarageLogic.ValueOutOfRangeException eInner = e.InnerException as GarageLogic.ValueOutOfRangeException;
+                        OutputToConsole(eInner.Message);
+                        OutputToConsole(string.Format("Value must be between {0} - {1}{2}", eInner.MinValue, eInner.MaxValue, Environment.NewLine));
+                        areParametersValid = false;
+                    }
+                }
             }
 
-            //create a new vehicle instance with all relevant params for the specific car type given
-            vehicleMembersArray = membersFromInputList.ToArray();
-            Vehicle vehicleInstance = this.m_GarageManager.CreateVehicle(i_SupportedVehicle, vehicleMembersArray);
             return vehicleInstance;
         }
 

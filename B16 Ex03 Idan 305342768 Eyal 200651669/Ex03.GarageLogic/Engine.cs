@@ -13,9 +13,14 @@
         protected readonly float r_MaxPowerAmount;
         protected float m_CurrentPowerAmount;
 
-        public Engine(float i_MaxPowerAmount)
+        public Engine(float i_MaxPowerAmount, float i_CurrentPowerAmount)
         {
             r_MaxPowerAmount = i_MaxPowerAmount;
+            if (i_CurrentPowerAmount > i_MaxPowerAmount)
+            {
+                throw new ValueOutOfRangeException(0, i_MaxPowerAmount);
+            }
+            m_CurrentPowerAmount = i_CurrentPowerAmount;
         }
 
         public void RePower(float i_PowerAmount)

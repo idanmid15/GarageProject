@@ -2,7 +2,7 @@
 
 namespace Ex03.GarageLogic
 {
-    class ValueOutOfRangeException : Exception
+   public class ValueOutOfRangeException : Exception
     {
         private float m_MaxValue;
         private float m_MinValue;

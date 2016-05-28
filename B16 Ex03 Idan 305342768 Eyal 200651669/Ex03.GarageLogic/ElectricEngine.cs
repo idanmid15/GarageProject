@@ -2,9 +2,8 @@
 {
     public class ElectricEngine : Engine
     {
-        public ElectricEngine(float i_ChargeTimeLeft, float i_MaxChargeTime) : base(i_MaxChargeTime)
+        public ElectricEngine(float i_ChargeTimeLeft, float i_MaxChargeTime) : base(i_MaxChargeTime, i_ChargeTimeLeft)
         {
-            this.m_CurrentPowerAmount = i_ChargeTimeLeft;
             this.m_EngineType = eEngineType.Electric;
         }
 
