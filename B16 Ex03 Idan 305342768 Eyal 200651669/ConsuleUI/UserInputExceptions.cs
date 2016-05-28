@@ -333,5 +333,45 @@ namespace Ex03.ConsoleUI
             }
             return userOption;
         }
+
+        public static float ParseFuelOrChargeAmount(GarageManager.eSupportedVehciles i_Vehicle, string i_Input)
+        {
+            float floatInput = ParseFloatInput(i_Input);
+            switch (i_Vehicle)
+            {
+                case GarageManager.eSupportedVehciles.ElectricBike:
+                    if (floatInput > 1.9f || floatInput < 0) {
+                        throw new GarageLogic.ValueOutOfRangeException(0, 1.9f);
+                    }
+                    break;
+                case GarageManager.eSupportedVehciles.ElectricCar:
+                    if (floatInput > 3.3f || floatInput < 0)
+                    {
+                        throw new GarageLogic.ValueOutOfRangeException(0, 3.3f);
+                    }
+                    break;
+                case GarageManager.eSupportedVehciles.FueledBike:
+                    if (floatInput > 7.2f || floatInput < 0)
+                    {
+                        throw new GarageLogic.ValueOutOfRangeException(0, 7.2f);
+                    }
+                    break;
+                case GarageManager.eSupportedVehciles.FueledCar:
+                    if (floatInput > 38f || floatInput < 0)
+                    {
+                        throw new GarageLogic.ValueOutOfRangeException(0, 38f);
+                    }
+                    break;
+                case GarageManager.eSupportedVehciles.Truck:
+                    if (floatInput > 135f || floatInput < 0)
+                    {
+                        throw new GarageLogic.ValueOutOfRangeException(0, 135f);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return floatInput;
+        }
     }
 }

@@ -109,7 +109,6 @@ namespace Ex03.ConsoleUI
             Vehicle vehicleInstance = null;
             object[] vehicleMembersArray = null;
             bool isMemberValid = false;
-            bool areParametersValid = false;
             string memberInput = string.Empty;
             int o_NumOfTires = 0;
             string o_ResultMembers = string.Empty;
@@ -134,6 +133,28 @@ namespace Ex03.ConsoleUI
                     parsedMemberInput = i_LicensePlate;
                     isMemberValid = true;
                 }
+                else if (param.m_MemberName == "m_CurrentFuelAmount" || param.m_MemberName == "m_ChargeTimeLeft")
+                {
+                    isMemberValid = false;
+                    OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
+                    while (!isMemberValid)
+                    {
+                        try
+                        {
+                            parsedMemberInput = UserInputExceptions.ParseFuelOrChargeAmount(i_SupportedVehicle, InputFromConsole());
+                            isMemberValid = true;
+
+                        }
+                        catch (ValueOutOfRangeException e)
+                        {
+                            OutputToConsole(string.Format("{0} Only {1} - {2}{3}",e.Message, e.MinValue, e.MaxValue, Environment.NewLine));
+                        }
+                        catch (Exception e)
+                        {
+                            OutputToConsole(e.Message);
+                        }
+                    }
+                }
                 else
                 {
                     OutputToConsole(string.Format("enter {0}:", param.m_MemberTranslation));
@@ -157,11 +178,7 @@ namespace Ex03.ConsoleUI
                 }
             //create a new vehicle instance with all relevant params for the specific car type given
             vehicleMembersArray = membersFromInputList.ToArray();
-               
-                
             vehicleInstance = this.m_GarageManager.CreateVehicle(i_SupportedVehicle, vehicleMembersArray);
-            areParametersValid = true;
-                
             return vehicleInstance;
         }
 
