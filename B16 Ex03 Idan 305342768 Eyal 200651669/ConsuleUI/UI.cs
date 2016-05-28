@@ -374,7 +374,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             }
             else if (client.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
             {
-                throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
+                throw new Exception("vehicle cannot be charged because it is not a fueled vehicle");
             }
             else if (client.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
             {
@@ -391,6 +391,14 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                     throw new Exception("charge time requested is greater than the max charge time possible");
                 }
             }
+            else if (client.m_Vehicle.m_Engine is FueledEngine)
+            {
+                FueledEngine currentFueledEngine = (FueledEngine)client.m_Vehicle.m_Engine;
+                if (currentFueledEngine.GetFuelType() != i_FuelType)
+                {
+                    throw new Exception(string.Format("Fuel type requested, does not match the fuel type of this vehicle ({0}).", currentFueledEngine.GetFuelType()));
+                }
+            }
         }
 
         public void ChooseUserActions(string i_LicensePlate)
@@ -403,7 +411,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             OutputToConsole(
 @"Choose the action you would like to make (by entering it's number):
 1. Insert a new vehicle
-2. Display lisence plates in garage (filtered)
+2. Display license plates in garage (filtered)
 3. Change vehicle status (by license plate)
 4. set tires pressure (by license plate)
 5. ReFuel vehicle (by license plate)
