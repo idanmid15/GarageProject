@@ -97,9 +97,14 @@
           <NewMemberFileName>GarageClient.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
+      <Class Name="Ex03.GarageLogic.GarageClient.SingleVehicleInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GarageClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAACAAgAAAAAECAAAAAEAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAAAECAAAAAAgAAAAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>GarageClient.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -113,7 +118,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>CAQAAAAQAAAAAAAAAABAAAAABAABAIAAAAACAFAgAAA=</HashCode>
+      <HashCode>CAAAAAAQAAAAAAAAQADAAAAABAABAIAAAAACAhAgAAA=</HashCode>
       <FileName>GarageManager.cs</FileName>
     </TypeIdentifier>
   </Class>

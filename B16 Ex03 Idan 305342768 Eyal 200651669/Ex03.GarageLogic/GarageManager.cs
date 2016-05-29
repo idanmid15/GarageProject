@@ -16,6 +16,8 @@ namespace Ex03.GarageLogic
             Truck = 5
         }
 
+        public const string k_NameSpace = "Ex03.GarageLogic.";
+
         public Dictionary<string, GarageClient> m_GarageDictonary;
         public Vehicle m_CurrentVehicleConstruction;
 
@@ -23,6 +25,11 @@ namespace Ex03.GarageLogic
         {
             m_GarageDictonary = new Dictionary<string, GarageClient>();
             m_CurrentVehicleConstruction = null;
+        }
+
+        public Vehicle CallCreateVehicle(GarageManager.eSupportedVehciles i_SupportedVehicle, object[] i_InputParameters)
+        {
+            return VehicleFactory.CreateVehicle(i_SupportedVehicle, i_InputParameters, this.m_CurrentVehicleConstruction);
         }
 
         public bool ClientExists(string i_LicensePlate)
@@ -43,18 +50,12 @@ namespace Ex03.GarageLogic
             //the ui will translate each name to a string for the user input
             List<MemberTranslator> memberList = new List<MemberTranslator>();
 
-            Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
+            Type typeOfVehicle = Type.GetType(k_NameSpace + i_SupportedVehicle.ToString());
             this.m_CurrentVehicleConstruction = typeOfVehicle.GetConstructors()[0].Invoke(null) as Vehicle;
             return this.m_CurrentVehicleConstruction.GetAllVehicleMembers();
         }
 
-        public Vehicle CreateVehicle(eSupportedVehciles i_SupportedVehicle, object[] i_InputParameters)
-        {
-            Type typeOfVehicle = Type.GetType("Ex03.GarageLogic." + i_SupportedVehicle.ToString());
-            MethodInfo constructMethod = typeOfVehicle.GetMethod("Construct");
-            this.m_CurrentVehicleConstruction = constructMethod.Invoke(this.m_CurrentVehicleConstruction, i_InputParameters) as Vehicle;
-            return this.m_CurrentVehicleConstruction;
-        }
+        
 
         public string DisplayVehiclesInGarage(GarageClient.eVehicleStatus i_Status)
         {
@@ -64,17 +65,20 @@ namespace Ex03.GarageLogic
             //run over each vehicle, and add to a string builder only the filtered ones.
             foreach (KeyValuePair<string, GarageClient> vehicleEntry in this.m_GarageDictonary)
             {
-                clientLicensePlate = vehicleEntry.Value.m_Vehicle.GetLicensePlate();
-                if (i_Status == GarageClient.eVehicleStatus.None)
+                foreach (KeyValuePair<string, GarageClient.SingleVehicleInfo>  innerDictionary in vehicleEntry.Value.m_Vehicles)
                 {
-                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
-                }
-                else if (vehicleEntry.Value.m_Status == i_Status)
-                {
-                    clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
-                }
+                    clientLicensePlate = innerDictionary.Value.m_Vehicle.GetLicensePlate();
+                    if (i_Status == GarageClient.eVehicleStatus.None)
+                    {
+                        clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
+                    }
+                    else if (innerDictionary.Value.m_Status == i_Status)
+                    {
+                        clientPropertiesString.Append(string.Format("{0}) License plate No. {1}{2}", index, clientLicensePlate, Environment.NewLine));
+                    }
 
-                index++;
+                    index++;
+                }
             }
 
             if (clientPropertiesString.Length == 0)
@@ -85,12 +89,14 @@ namespace Ex03.GarageLogic
             return clientPropertiesString.ToString();
         }
 
-        public void UpdateCarStatus(string i_LicensePlate, GarageClient.eVehicleStatus i_NewSatus)
+        public void UpdateVehicleStatus(string i_MainLicensePlate, string i_CurrentLicensePlate, GarageClient.eVehicleStatus i_NewSatus)
         {
-            GarageClient client = null;
-            if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
+            GarageClient o_Client = null;
+            GarageClient.SingleVehicleInfo o_InnerDict = null;
+            if (m_GarageDictonary.TryGetValue(i_MainLicensePlate, out o_Client))
             {
-                client.m_Status = i_NewSatus;
+                o_Client.m_Vehicles.TryGetValue(i_CurrentLicensePlate, out o_InnerDict);
+                o_InnerDict.m_Status = i_NewSatus;
             }
             else
             {
@@ -98,13 +104,15 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void SetTirePressureToMax(string i_LicensePlate)
+        public void SetTirePressureToMax(string i_MainLicensePlate, string i_CurrentLicensePlate)
         {
-            GarageClient client = null;
+            GarageClient o_Client = null;
             Wheel[] allCarWheels = null;
-            if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
+            GarageClient.SingleVehicleInfo o_InnerDict = null;
+            if (m_GarageDictonary.TryGetValue(i_MainLicensePlate, out o_Client))
             {
-                allCarWheels = client.m_Vehicle.GetWheels();
+                o_Client.m_Vehicles.TryGetValue(i_CurrentLicensePlate, out o_InnerDict);
+                allCarWheels = o_InnerDict.m_Vehicle.GetWheels();
                 foreach (Wheel currentWheel in allCarWheels)
                 {
                     currentWheel.SetTirePressure(currentWheel.GetMaxTirePressure());
@@ -112,21 +120,29 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void FuelVehicle(string i_LicensePlate, FueledEngine.eFuelType i_FuelType, float i_FuelAmount)
+        public void FuelVehicle(string i_MainLicensePlate, string i_CurrentLicensePlate, FueledEngine.eFuelType i_FuelType, float i_FuelAmount)
         {
-            GarageClient client = null;
-            if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
+            GarageClient o_Client = null;
+            GarageClient.SingleVehicleInfo o_InnerDict = null;
+            if (m_GarageDictonary.TryGetValue(i_MainLicensePlate, out o_Client))
             {
-                client.m_Vehicle.GetEngine().RePower(i_FuelAmount);
+                if (o_Client.m_Vehicles.TryGetValue(i_CurrentLicensePlate, out o_InnerDict))
+                {
+                    o_InnerDict.m_Vehicle.GetEngine().RePower(i_FuelAmount);
+                }
             }
         }
 
-        public void ChargeVehicle(string i_LicensePlate, float i_MinutesToCharge)
+        public void ChargeVehicle(string i_MainLicensePlate, string i_CurrentLicensePlate, float i_MinutesToCharge)
         {
-            GarageClient client = null;
-            if (m_GarageDictonary.TryGetValue(i_LicensePlate, out client))
+            GarageClient o_Client = null;
+            GarageClient.SingleVehicleInfo o_InnerDict = null;
+            if (m_GarageDictonary.TryGetValue(i_MainLicensePlate, out o_Client))
             {
-                client.m_Vehicle.GetEngine().RePower(i_MinutesToCharge);
+                if (o_Client.m_Vehicles.TryGetValue(i_CurrentLicensePlate, out o_InnerDict))
+                {
+                    o_InnerDict.m_Vehicle.GetEngine().RePower(i_MinutesToCharge);
+                }
             }
         }
 
