@@ -58,7 +58,11 @@ namespace Ex03.ConsoleUI
             while (true)
             {
                 userAction = string.Empty;
-                OutputToConsole(string.Format("Hello and Welcome to the garage.{0}what is your license plate number?", Environment.NewLine));
+                OutputToConsole(
+@"Hello and Welcome to the garage
+what is your license plate number?
+Notice: since you can have multiple cars in our garage we need the license plate
+of your main vehicle:");
                 m_MainClientLicensePlate = InputFromConsole();
                 m_CurrentVehicleLicensePlate = m_MainClientLicensePlate;
                 if (!this.m_GarageManager.ClientExists(m_MainClientLicensePlate))
@@ -365,13 +369,13 @@ enter 2 (or 'NotInRepair') - for not in repair status"));
 Enter 'Octan95' (or 1), 'Ocatan96' (or 2), , 'Ocatan98' (or 3) or 'Soler' (or 4)"));
                     fuelTypeInput = InputFromConsole();
                     FueledEngine.eFuelType parsedFuelType = UserInputExceptions.ParseFuelTypeInput(fuelTypeInput);
-                    CheckIfRepowerArgsExceptions(m_CurrentVehicleLicensePlate, repowerAmountInput, isFuelEngine, parsedFuelType);
+                    UserInputExceptions.CheckIfRepowerArgsExceptions(m_CurrentVehicleLicensePlate, repowerAmountInput, isFuelEngine, m_GarageManager, m_MainClientLicensePlate, parsedFuelType);
                     this.m_GarageManager.FuelVehicle(m_MainClientLicensePlate, m_CurrentVehicleLicensePlate, parsedFuelType, repowerAmountInput);
                     OutputToConsole(string.Format("vehicle {0} has been fueled with {1} liters", m_CurrentVehicleLicensePlate, repowerAmountInput));
                 }
                 else
                 {
-                    CheckIfRepowerArgsExceptions(m_CurrentVehicleLicensePlate, repowerAmountInput, isFuelEngine);
+                    UserInputExceptions.CheckIfRepowerArgsExceptions(m_CurrentVehicleLicensePlate, repowerAmountInput, isFuelEngine, m_GarageManager, m_MainClientLicensePlate);
                     this.m_GarageManager.ChargeVehicle(m_MainClientLicensePlate, m_CurrentVehicleLicensePlate, repowerAmountInput);
                     OutputToConsole(string.Format("vehicle {0} has been charged with {1} hours", m_CurrentVehicleLicensePlate, repowerAmountInput));
                 }
@@ -379,50 +383,6 @@ Enter 'Octan95' (or 1), 'Ocatan96' (or 2), , 'Ocatan98' (or 3) or 'Soler' (or 4)
             catch (Exception e)
             {
                 OutputToConsole(e.Message);
-            }
-        }
-
-        public void CheckIfRepowerArgsExceptions(string i_LicensePlate, float i_RepowerAmount, bool i_IsFuelEngine, FueledEngine.eFuelType i_FuelType = FueledEngine.eFuelType.None)
-        {
-            GarageClient o_Client = null;
-            GarageClient.SingleVehicleInfo o_InnerDict = null;
-            if (this.m_GarageManager.m_GarageDictonary.TryGetValue(m_MainClientLicensePlate, out o_Client))
-            {
-                if (!o_Client.m_Vehicles.TryGetValue(i_LicensePlate, out o_InnerDict))
-                {
-                    throw new Exception("license plate was not found in the garage");
-                }
-            }
-
-            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
-            {
-                throw new Exception("vehicle cannot be charged because it is not a fueled vehicle");
-            }
-
-            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
-            {
-                throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
-            }
-
-            if (i_RepowerAmount > o_InnerDict.m_Vehicle.m_Engine.getMaxPowerAmount())
-            {
-                if (i_IsFuelEngine)
-                {
-                    throw new Exception("Fuel amount requested is greater than the fuel tank capacity");
-                }
-                else
-                {
-                    throw new Exception("charge time requested is greater than the max charge time possible");
-                }
-            }
-
-            if (o_InnerDict.m_Vehicle.m_Engine is FueledEngine)
-            {
-                FueledEngine currentFueledEngine = (FueledEngine)o_InnerDict.m_Vehicle.m_Engine;
-                if (currentFueledEngine.GetFuelType() != i_FuelType)
-                {
-                    throw new Exception(string.Format("Fuel type requested, does not match the fuel type of this vehicle ({0}).", currentFueledEngine.GetFuelType()));
-                }
             }
         }
 

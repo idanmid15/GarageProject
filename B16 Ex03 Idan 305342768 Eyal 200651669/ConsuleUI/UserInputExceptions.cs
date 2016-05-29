@@ -414,5 +414,49 @@ namespace Ex03.ConsoleUI
 
             return floatInput;
         }
+
+        public static void CheckIfRepowerArgsExceptions(string i_LicensePlate, float i_RepowerAmount, bool i_IsFuelEngine, GarageManager i_GarageManager, string i_MainClientLicensePlate, FueledEngine.eFuelType i_FuelType = FueledEngine.eFuelType.None)
+        {
+            GarageClient o_Client = null;
+            GarageClient.SingleVehicleInfo o_InnerDict = null;
+            if (i_GarageManager.m_GarageDictonary.TryGetValue(i_MainClientLicensePlate, out o_Client))
+            {
+                if (!o_Client.m_Vehicles.TryGetValue(i_LicensePlate, out o_InnerDict))
+                {
+                    throw new Exception("license plate was not found in the garage");
+                }
+            }
+
+            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
+            {
+                throw new Exception("vehicle cannot be charged because it is not a fueled vehicle");
+            }
+
+            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
+            {
+                throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
+            }
+
+            if (i_RepowerAmount > o_InnerDict.m_Vehicle.m_Engine.getMaxPowerAmount())
+            {
+                if (i_IsFuelEngine)
+                {
+                    throw new Exception("Fuel amount requested is greater than the fuel tank capacity");
+                }
+                else
+                {
+                    throw new Exception("charge time requested is greater than the max charge time possible");
+                }
+            }
+
+            if (o_InnerDict.m_Vehicle.m_Engine is FueledEngine)
+            {
+                FueledEngine currentFueledEngine = (FueledEngine)o_InnerDict.m_Vehicle.m_Engine;
+                if (currentFueledEngine.GetFuelType() != i_FuelType)
+                {
+                    throw new Exception(string.Format("Fuel type requested, does not match the fuel type of this vehicle ({0}).", currentFueledEngine.GetFuelType()));
+                }
+            }
+        }
     }
 }
