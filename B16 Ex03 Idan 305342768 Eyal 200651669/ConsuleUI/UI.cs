@@ -211,7 +211,7 @@ namespace Ex03.ConsoleUI
                 while (!isValid)
                 {
                     memberInput = InputFromConsole();
-                    if (Single.TryParse(memberInput, out o_Tire))
+                    if (float.TryParse(memberInput, out o_Tire))
                     {
                         tiresArray[i] = o_Tire;
                         isValid = true;
@@ -365,7 +365,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
             }
         }
 
-        public void CheckIfRepowerArgsExceptions(string i_LicensePlate, float i_RepowerAmount, Boolean i_IsFuelEngine, FueledEngine.eFuelType i_FuelType = FueledEngine.eFuelType.None)
+        public void CheckIfRepowerArgsExceptions(string i_LicensePlate, float i_RepowerAmount, bool i_IsFuelEngine, FueledEngine.eFuelType i_FuelType = FueledEngine.eFuelType.None)
         {
             GarageClient client = null;
             if (!this.m_GarageManager.m_GarageDictonary.TryGetValue(i_LicensePlate, out client))

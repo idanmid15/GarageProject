@@ -86,7 +86,7 @@ namespace Ex03.ConsoleUI
             GarageManager.eSupportedVehciles typeOfInput = 0;
             try
             {
-                typeOfInput = (GarageManager.eSupportedVehciles)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input));
+                typeOfInput = (GarageManager.eSupportedVehciles)Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_Input);
             }
             catch
             {
@@ -122,7 +122,7 @@ namespace Ex03.ConsoleUI
             UI.eUserOptions userOption = 0;
             try
             {
-                switch ((UI.eUserOptions)(Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_UserOption)))
+                switch ((UI.eUserOptions)Enum.Parse(typeof(GarageManager.eSupportedVehciles), i_UserOption))
                 {
                     case UI.eUserOptions.InsertNewVehicle:
                         userOption = UI.eUserOptions.InsertNewVehicle;
@@ -162,7 +162,7 @@ namespace Ex03.ConsoleUI
             GarageClient.eVehicleStatus userOption = 0;
             try
             {
-                switch ((GarageClient.eVehicleStatus)(Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input)))
+                switch ((GarageClient.eVehicleStatus)Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input))
                 {
                     case GarageClient.eVehicleStatus.InRepair:
                         userOption = GarageClient.eVehicleStatus.InRepair;
@@ -190,7 +190,7 @@ namespace Ex03.ConsoleUI
             GarageClient.eVehicleStatus userOption = 0;
             try
             {
-                switch ((GarageClient.eVehicleStatus)(Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input)))
+                switch ((GarageClient.eVehicleStatus)Enum.Parse(typeof(GarageClient.eVehicleStatus), i_Input))
                 {
                     case GarageClient.eVehicleStatus.InRepair:
                         userOption = GarageClient.eVehicleStatus.InRepair;
@@ -215,7 +215,7 @@ namespace Ex03.ConsoleUI
             Car.eCarColor userOption = 0;
             try
             {
-                switch ((Car.eCarColor)(Enum.Parse(typeof(Car.eCarColor), i_Input)))
+                switch ((Car.eCarColor)Enum.Parse(typeof(Car.eCarColor), i_Input))
                 {
                     case Car.eCarColor.Black:
                         userOption = Car.eCarColor.Black;
@@ -246,7 +246,7 @@ namespace Ex03.ConsoleUI
             Car.eNumOfDoors userOption = 0;
             try
             {
-                switch ((Car.eNumOfDoors)(Enum.Parse(typeof(Car.eNumOfDoors), i_Input)))
+                switch ((Car.eNumOfDoors)Enum.Parse(typeof(Car.eNumOfDoors), i_Input))
                 {
                     case Car.eNumOfDoors.Two:
                         userOption = Car.eNumOfDoors.Two;
@@ -275,7 +275,7 @@ namespace Ex03.ConsoleUI
          public static FueledEngine.eFuelType ParseFuelTypeInput(string i_Input)
          {
              FueledEngine.eFuelType userOption = 0;
-             switch ((FueledEngine.eFuelType)(Enum.Parse(typeof(FueledEngine.eFuelType), i_Input)))
+             switch ((FueledEngine.eFuelType)Enum.Parse(typeof(FueledEngine.eFuelType), i_Input))
              {
                  case FueledEngine.eFuelType.Octan95:
                      userOption = FueledEngine.eFuelType.Octan95;
@@ -319,7 +319,7 @@ namespace Ex03.ConsoleUI
             Bike.eLicenseType userOption = 0;
             try
             {
-                switch ((Bike.eLicenseType)(Enum.Parse(typeof(Bike.eLicenseType), i_Input)))
+                switch ((Bike.eLicenseType)Enum.Parse(typeof(Bike.eLicenseType), i_Input))
                 {
                     case Bike.eLicenseType.A:
                         userOption = Bike.eLicenseType.A;
