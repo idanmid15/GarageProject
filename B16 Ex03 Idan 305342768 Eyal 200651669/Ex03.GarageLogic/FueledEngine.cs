@@ -7,7 +7,6 @@
             Octan95,
             Octan96,
             Octan98,
-            Octan96,
             Soler,
             None
         }

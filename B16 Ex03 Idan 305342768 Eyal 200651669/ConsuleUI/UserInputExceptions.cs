@@ -288,9 +288,6 @@ namespace Ex03.ConsoleUI
                 case FueledEngine.eFuelType.Octan98:
                      userOption = FueledEngine.eFuelType.Octan98;
                      break;
-                case FueledEngine.eFuelType.Octan96:
-                    userOption = FueledEngine.eFuelType.Octan96;
-                    break;
                 case FueledEngine.eFuelType.Soler:
                      userOption = FueledEngine.eFuelType.Soler;
                      break;
