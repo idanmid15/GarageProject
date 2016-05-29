@@ -411,6 +411,7 @@ namespace Ex03.ConsoleUI
                     throw new ValueOutOfRangeException(0, 31);
                 }
             }
+
             return floatInput;
         }
     }

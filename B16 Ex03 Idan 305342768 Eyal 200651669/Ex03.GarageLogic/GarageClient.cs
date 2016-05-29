@@ -19,6 +19,7 @@ namespace Ex03.GarageLogic
             public Vehicle m_Vehicle;
             public Type m_TypeOfVehicle;
             public eVehicleStatus m_Status;
+
             public SingleVehicleInfo(Vehicle i_Vehicle, Type i_TypeOfVehicle, eVehicleStatus i_Status)
             {
                 m_Vehicle = i_Vehicle;
@@ -26,19 +27,19 @@ namespace Ex03.GarageLogic
                 m_Status = i_Status;
             }
 
-            public override String ToString()
+            public override string ToString()
             {
                 StringBuilder clientString = new StringBuilder();
                 clientString.AppendFormat("Vehicle Status: {0}{1}", m_Status, Environment.NewLine);
                 MethodInfo methodToString = m_TypeOfVehicle.GetMethod("ToString");
-                clientString.Append((methodToString.Invoke(m_Vehicle, null)));
+                clientString.Append(methodToString.Invoke(m_Vehicle, null));
                 return clientString.ToString();
             }
         }
 
         public string m_ClientName;
         public string m_ClientPhone;
-        public Dictionary <string ,SingleVehicleInfo> m_Vehicles;
+        public Dictionary<string, SingleVehicleInfo> m_Vehicles;
 
         public GarageClient(
             string i_ClientName,
@@ -57,10 +58,9 @@ namespace Ex03.GarageLogic
             Vehicle i_Vehicle,
             eVehicleStatus i_Status,
             GarageManager.eSupportedVehciles i_SupportedVehicle,
-            string i_LicensePlate
-            )
+            string i_LicensePlate)
             {
-                m_Vehicles.Add(i_LicensePlate ,new SingleVehicleInfo(i_Vehicle, Type.GetType(GarageManager.k_NameSpace + i_SupportedVehicle.ToString()), i_Status));
+                m_Vehicles.Add(i_LicensePlate, new SingleVehicleInfo(i_Vehicle, Type.GetType(GarageManager.k_NameSpace + i_SupportedVehicle.ToString()), i_Status));
             }
 
         public override string ToString()
@@ -73,6 +73,7 @@ namespace Ex03.GarageLogic
                 clientString.Append(vehicleEntry.Value.ToString());
                 clientString.AppendFormat("***********************************{0}", Environment.NewLine);                
             }
+
             return clientString.ToString();
         }
     }

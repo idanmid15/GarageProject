@@ -9,8 +9,7 @@
 
         public override string ToString()
         {
-            return string.Format("Engine type: {0}{1}Charge amount: {2}{1}", 
-                m_EngineType.ToString(), System.Environment.NewLine, m_CurrentPowerAmount);                            
+            return string.Format("Engine type: {0}{1}Charge amount: {2}{1}", m_EngineType.ToString(), System.Environment.NewLine, m_CurrentPowerAmount);                            
         }
     }
 }

@@ -29,8 +29,7 @@
 
         public override string ToString()
         {
-            return string.Format("Engine type: {0}{1}Fuel amount: {2}{1}Fuel Type: {3}{1}",
-                m_EngineType.ToString(), System.Environment.NewLine, m_CurrentPowerAmount, m_FuelType.ToString());
+            return string.Format("Engine type: {0}{1}Fuel amount: {2}{1}Fuel Type: {3}{1}", m_EngineType.ToString(), System.Environment.NewLine, m_CurrentPowerAmount, m_FuelType.ToString());
         }
     }
 }

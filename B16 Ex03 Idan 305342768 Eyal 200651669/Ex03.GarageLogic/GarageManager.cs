@@ -46,8 +46,8 @@ namespace Ex03.GarageLogic
 
         public List<MemberTranslator> GetVehicleMembers(eSupportedVehciles i_SupportedVehicle)
         {
-            //the method returns a list of all parametrs of specific constructor as <paramName, paramType>
-            //the ui will translate each name to a string for the user input
+            ///the method returns a list of all parametrs of specific constructor as <paramName, paramType>
+            ///the ui will translate each name to a string for the user input
             List<MemberTranslator> memberList = new List<MemberTranslator>();
 
             Type typeOfVehicle = Type.GetType(k_NameSpace + i_SupportedVehicle.ToString());
@@ -55,17 +55,16 @@ namespace Ex03.GarageLogic
             return this.m_CurrentVehicleConstruction.GetAllVehicleMembers();
         }
 
-        
-
         public string DisplayVehiclesInGarage(GarageClient.eVehicleStatus i_Status)
         {
             string clientLicensePlate = string.Empty;
             StringBuilder clientPropertiesString = new StringBuilder();
             int index = 1;
-            //run over each vehicle, and add to a string builder only the filtered ones.
+            
+            ///run over each vehicle, and add to a string builder only the filtered ones.
             foreach (KeyValuePair<string, GarageClient> vehicleEntry in this.m_GarageDictonary)
             {
-                foreach (KeyValuePair<string, GarageClient.SingleVehicleInfo>  innerDictionary in vehicleEntry.Value.m_Vehicles)
+                foreach (KeyValuePair<string, GarageClient.SingleVehicleInfo> innerDictionary in vehicleEntry.Value.m_Vehicles)
                 {
                     clientLicensePlate = innerDictionary.Value.m_Vehicle.GetLicensePlate();
                     if (i_Status == GarageClient.eVehicleStatus.None)
