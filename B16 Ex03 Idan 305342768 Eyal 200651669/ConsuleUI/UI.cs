@@ -388,18 +388,17 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                 if (!o_Client.m_Vehicles.TryGetValue(i_LicensePlate, out o_InnerDict))
                 {
                     throw new Exception("license plate was not found in the garage");
-
                 }
             }
-            else if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
+            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Electric && i_IsFuelEngine)
             {
                 throw new Exception("vehicle cannot be charged because it is not a fueled vehicle");
             }
-            else if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
+            if (o_InnerDict.m_Vehicle.m_Engine.GetEngineType() == Engine.eEngineType.Fuel && !i_IsFuelEngine)
             {
                 throw new Exception("vehicle cannot be charged because it is not an electric vehicle");
             }
-            else if (i_RepowerAmount > o_InnerDict.m_Vehicle.m_Engine.getMaxPowerAmount())
+            if (i_RepowerAmount > o_InnerDict.m_Vehicle.m_Engine.getMaxPowerAmount())
             {
                 if (i_IsFuelEngine)
                 {
@@ -410,7 +409,7 @@ Enter 'Octan95' (or 1), 'Ocatan98' (or 2) or 'Soler' (or 3)"));
                     throw new Exception("charge time requested is greater than the max charge time possible");
                 }
             }
-            else if (o_InnerDict.m_Vehicle.m_Engine is FueledEngine)
+            if (o_InnerDict.m_Vehicle.m_Engine is FueledEngine)
             {
                 FueledEngine currentFueledEngine = (FueledEngine)o_InnerDict.m_Vehicle.m_Engine;
                 if (currentFueledEngine.GetFuelType() != i_FuelType)
